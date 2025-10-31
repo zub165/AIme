@@ -1,7 +1,25 @@
 const aiModal = document.getElementById('ai-modal');
-document.getElementById('open-ai').onclick = () => aiModal.setAttribute('aria-hidden','false');
-document.getElementById('open-ai-2').onclick = () => aiModal.setAttribute('aria-hidden','false');
-document.getElementById('close-ai').onclick = () => aiModal.setAttribute('aria-hidden','true');
+const openAiLink = document.getElementById('open-ai-link');
+const openAi2 = document.getElementById('open-ai-2');
+const closeAi = document.getElementById('close-ai');
+
+if (openAiLink) {
+  openAiLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    aiModal.setAttribute('aria-hidden','false');
+  });
+}
+
+if (openAi2) {
+  openAi2.addEventListener('click', (e) => {
+    e.preventDefault();
+    aiModal.setAttribute('aria-hidden','false');
+  });
+}
+
+if (closeAi) {
+  closeAi.addEventListener('click', () => aiModal.setAttribute('aria-hidden','true'));
+}
 
 // Contact form → backend
 const form = document.getElementById('contact-form');

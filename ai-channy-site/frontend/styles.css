@@ -88,7 +88,9 @@ nav a:hover {
 /* Hero */
 .hero {
   padding: 4rem 0;
-  background: linear-gradient(to bottom, var(--bg-alt), var(--bg));
+  background: radial-gradient(1200px 600px at 20% 10%, rgba(37,99,235,0.12), transparent 60%),
+              radial-gradient(800px 400px at 80% 0%, rgba(16,185,129,0.10), transparent 60%),
+              linear-gradient(to bottom, var(--bg-alt), var(--bg));
 }
 
 .hero-grid {
@@ -128,6 +130,7 @@ nav a:hover {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 20px 40px var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .hero-card img {
@@ -424,6 +427,47 @@ nav a:hover {
   width: 100%;
 }
 
+/* Apps section */
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.app-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 6px 12px var(--shadow);
+}
+
+.app-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.app-text {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.store-badge {
+  display: inline-block;
+  padding: 0.625rem 1rem;
+  border-radius: 8px;
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.store-badge.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero-grid {
@@ -463,6 +507,10 @@ nav a:hover {
     height: 100vh;
     max-height: 100vh;
     border-radius: 0;
+  }
+
+  .app-grid {
+    grid-template-columns: 1fr;
   }
 }
 
