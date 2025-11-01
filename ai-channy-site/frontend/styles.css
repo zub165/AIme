@@ -1,8 +1,8 @@
 :root {
-  --purple: #9333ea;
-  --purple-dark: #7e22ce;
-  --green: #10b981;
-  --green-dark: #059669;
+  --red: #ef4444;
+  --red-dark: #dc2626;
+  --blue: #3b82f6;
+  --blue-dark: #2563eb;
   --dark-bg: #0b1020;
   --dark-surface: #1a1f35;
   --text-light: #ffffff;
@@ -59,7 +59,7 @@ body {
 .logo-square {
   width: 48px;
   height: 48px;
-  background: var(--purple);
+  background: var(--red);
   color: white;
   display: flex;
   align-items: center;
@@ -90,8 +90,8 @@ body {
 
 .nav-icon:hover,
 .nav-icon.active {
-  color: var(--purple);
-  background: rgba(147, 51, 234, 0.1);
+  color: var(--red);
+  background: rgba(239, 68, 68, 0.1);
 }
 
 .sidebar-social {
@@ -107,7 +107,7 @@ body {
 }
 
 .social-icon:hover {
-  color: var(--purple);
+  color: var(--red);
 }
 
 /* Hero Section */
@@ -124,7 +124,7 @@ body {
 .hero-background {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(147, 51, 234, 0.3) 0%, rgba(16, 185, 129, 0.2) 100%),
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(59, 130, 246, 0.2) 100%),
               url('https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1920&q=80') center/cover;
 }
 
@@ -153,7 +153,7 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, var(--green) 0%, var(--purple) 100%);
+  background: linear-gradient(90deg, var(--blue) 0%, var(--red) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -171,7 +171,7 @@ body {
 
 .dna-medical {
   height: 44px;
-  background: linear-gradient(135deg, var(--green), var(--green-dark));
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,7 +212,7 @@ body {
 
 .ecg-wave {
   height: 44px;
-  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  background: linear-gradient(135deg, var(--red), var(--red-dark));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -259,16 +259,16 @@ body {
 .btn-glow {
   display: inline-block;
   padding: 1rem 2rem;
-  background: linear-gradient(90deg, var(--green) 0%, var(--purple) 100%);
+  background: linear-gradient(90deg, var(--blue) 0%, var(--red) 100%);
   color: white;
   text-decoration: none;
   font-weight: 700;
   font-size: 1.05rem;
   border-radius: 10px;
   transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 10px 30px rgba(147, 51, 234, 0.35);
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.35);
 }
-.btn-glow:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(147, 51, 234, 0.5); }
+.btn-glow:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(239, 68, 68, 0.5); }
 .btn-outline {
   display: inline-block;
   padding: 1rem 2rem;
@@ -332,7 +332,7 @@ body {
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(147, 51, 234, 0.3);
+  box-shadow: 0 8px 30px rgba(239, 68, 68, 0.3);
 }
 
 .card::after {
@@ -341,7 +341,7 @@ body {
   inset: -1px;
   border-radius: 16px;
   padding: 1px;
-  background: linear-gradient(90deg, rgba(147,51,234,0.35), rgba(16,185,129,0.35));
+  background: linear-gradient(90deg, rgba(239,68,68,0.35), rgba(59,130,246,0.35));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -371,7 +371,7 @@ body {
   content: '•';
   position: absolute;
   left: 0;
-  color: var(--green);
+  color: var(--red);
   font-weight: bold;
   font-size: 1.5rem;
 }
@@ -380,7 +380,7 @@ body {
 .btn {
   display: inline-block;
   padding: 0.875rem 2rem;
-  background: linear-gradient(90deg, var(--green) 0%, var(--purple) 100%);
+  background: linear-gradient(90deg, var(--blue) 0%, var(--red) 100%);
   color: white;
   text-decoration: none;
   border-radius: 8px;
@@ -393,7 +393,7 @@ body {
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
 }
 
 .btn.small {
@@ -410,7 +410,7 @@ body {
 }
 
 .badge {
-  background: linear-gradient(90deg, var(--purple) 0%, var(--green) 100%);
+  background: linear-gradient(90deg, var(--red) 0%, var(--blue) 100%);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -436,7 +436,61 @@ body {
 
 .app-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+}
+
+.app-card.featured {
+  border: 2px solid var(--red);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(59, 130, 246, 0.1));
+}
+
+.ambulance-animation {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to right, transparent 0%, rgba(239, 68, 68, 0.05) 50%, transparent 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ambulance-animation svg {
+  width: 100%;
+  max-width: 200px;
+  height: 80px;
+  animation: ambulance-drive 4s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes ambulance-drive {
+  0% {
+    transform: translateX(-150%) scale(1);
+  }
+  10% {
+    transform: translateX(-100%) scale(1.05);
+  }
+  50% {
+    transform: translateX(50%) scale(1);
+  }
+  90% {
+    transform: translateX(100%) scale(1.05);
+  }
+  100% {
+    transform: translateX(150%) scale(1);
+  }
+}
+
+.btn-mywaitine {
+  background: linear-gradient(90deg, var(--red) 0%, var(--red-dark) 100%) !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5) !important;
+}
+
+.btn-mywaitine:hover {
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.7) !important;
+  transform: translateY(-3px) !important;
 }
 
 .app-card h3 {
@@ -473,7 +527,7 @@ body {
   background: var(--dark-surface);
   padding: 2.5rem;
   border-radius: 16px;
-  border-left: 4px solid var(--green);
+  border-left: 4px solid var(--blue);
   margin-top: 2rem;
 }
 
@@ -531,7 +585,7 @@ body {
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  border-color: var(--purple);
+  border-color: var(--red);
 }
 
 .contact-form input::placeholder,
@@ -540,11 +594,11 @@ body {
 }
 
 .success {
-  background: rgba(16, 185, 129, 0.2);
-  color: var(--green);
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--blue);
   padding: 1rem;
   border-radius: 8px;
-  border: 1px solid var(--green);
+  border: 1px solid var(--blue);
   margin-top: 1rem;
 }
 
@@ -555,7 +609,7 @@ body {
 }
 
 .tiny a {
-  color: var(--purple);
+  color: var(--red);
   text-decoration: none;
 }
 
@@ -596,7 +650,7 @@ body {
 }
 
 .footer-links a:hover {
-  color: var(--purple);
+  color: var(--red);
 }
 
 /* Floating Chat Button */
@@ -604,7 +658,7 @@ body {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background: var(--purple);
+  background: var(--red);
   color: white;
   padding: 1rem 1.5rem;
   border-radius: 50px;
@@ -613,14 +667,14 @@ body {
   gap: 0.75rem;
   text-decoration: none;
   font-weight: 600;
-  box-shadow: 0 4px 20px rgba(147, 51, 234, 0.4);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
   z-index: 999;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .floating-chat:hover {
   transform: translateY(-4px);
-  box-shadow: 0 6px 30px rgba(147, 51, 234, 0.6);
+  box-shadow: 0 6px 30px rgba(239, 68, 68, 0.6);
 }
 
 .floating-chat i {
