@@ -230,16 +230,15 @@ body {
 }
 
 .hero-title {
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
   font-weight: 900;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--text-light);
   margin-bottom: 2rem;
   text-transform: uppercase;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.1;
 }
 
 .gradient-text {
@@ -857,7 +856,8 @@ body {
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    letter-spacing: 0.05em;
   }
 
   .hero-graphic {
@@ -901,6 +901,15 @@ body {
 
   .main-content {
     margin-left: 0;
+  }
+
+  .hero-content {
+    padding: 0 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(1.5rem, 8vw, 2rem);
+    letter-spacing: 0.03em;
   }
 
   .floating-chat {
