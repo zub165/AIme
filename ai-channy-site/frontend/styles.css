@@ -13,18 +13,18 @@
   --border: #2d3748;
 }
 
-/* Daylight Theme */
+/* Daylight Theme - Bright Professional (BayCare Style) */
 [data-theme="daylight"] {
-  --primary-1: #f59e0b;
-  --primary-1-dark: #d97706;
-  --primary-2: #fbbf24;
-  --primary-2-dark: #f59e0b;
-  --bg-main: #fefce8;
-  --bg-surface: #fff9c4;
-  --text-light: #1c1917;
-  --text-muted: #57534e;
-  --sidebar-bg: #fef3c7;
-  --border: #e7c200;
+  --primary-1: #0066cc;
+  --primary-1-dark: #004499;
+  --primary-2: #0088ff;
+  --primary-2-dark: #0066cc;
+  --bg-main: #ffffff;
+  --bg-surface: #f8f9fa;
+  --text-light: #1a1a1a;
+  --text-muted: #666666;
+  --sidebar-bg: #f0f4f8;
+  --border: #e0e0e0;
 }
 
 /* Ocean Theme */
@@ -211,15 +211,191 @@ body {
 .hero-background {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--primary-1) 0%, var(--primary-2) 100%),
-              url('https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1920&q=80') center/cover;
-  opacity: 0.25;
+  background: linear-gradient(135deg, var(--primary-1) 0%, var(--primary-2) 100%);
+  overflow: hidden;
+}
+
+[data-theme="daylight"] .hero-background {
+  background: linear-gradient(135deg, rgba(0, 102, 204, 0.1) 0%, rgba(0, 136, 255, 0.1) 100%);
+}
+
+.medical-bg-images {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+}
+
+.bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: fade-cycle 20s infinite;
+}
+
+.bg-doctors {
+  animation-delay: 0s;
+}
+
+.bg-hospital {
+  animation-delay: 10s;
+}
+
+@keyframes fade-cycle {
+  0%, 45% { opacity: 0.3; }
+  50%, 95% { opacity: 0; }
+  100% { opacity: 0.3; }
+}
+
+[data-theme="daylight"] .medical-bg-images {
+  opacity: 0.15;
+}
+
+[data-theme="daylight"] .bg-img {
+  animation: fade-cycle-daylight 20s infinite;
+}
+
+@keyframes fade-cycle-daylight {
+  0%, 45% { opacity: 0.15; }
+  50%, 95% { opacity: 0; }
+  100% { opacity: 0.15; }
+}
+
+/* Kidney Graphics */
+.medical-graphics {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.kidney-graphic {
+  position: absolute;
+  width: 200px;
+  height: 280px;
+  opacity: 0.15;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 280'%3E%3Cpath d='M100 20 Q140 30 160 80 Q170 140 150 200 Q130 240 100 260 Q70 240 50 200 Q30 140 40 80 Q60 30 100 20 Z' fill='none' stroke='%230066cc' stroke-width='3'/%3E%3Cpath d='M90 60 Q110 70 115 100 Q118 130 110 160 Q105 190 100 200' fill='none' stroke='%230066cc' stroke-width='2'/%3E%3Ccircle cx='100' cy='180' r='25' fill='none' stroke='%230066cc' stroke-width='2'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: float-kidney 6s ease-in-out infinite;
+}
+
+.kidney-left {
+  left: 5%;
+  top: 20%;
+  animation-delay: 0s;
+}
+
+.kidney-right {
+  right: 5%;
+  bottom: 20%;
+  animation-delay: 3s;
+  transform: scaleX(-1);
+}
+
+@keyframes float-kidney {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+[data-theme="daylight"] .kidney-graphic {
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 280'%3E%3Cpath d='M100 20 Q140 30 160 80 Q170 140 150 200 Q130 240 100 260 Q70 240 50 200 Q30 140 40 80 Q60 30 100 20 Z' fill='none' stroke='%230066cc' stroke-width='3'/%3E%3Cpath d='M90 60 Q110 70 115 100 Q118 130 110 160 Q105 190 100 200' fill='none' stroke='%230066cc' stroke-width='2'/%3E%3Ccircle cx='100' cy='180' r='25' fill='none' stroke='%230066cc' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+/* Dialysis Machine Animation */
+.dialysis-animation-container {
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
+  width: 120px;
+  height: 180px;
+  z-index: 2;
+  opacity: 0.2;
+}
+
+.dialysis-machine {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, 
+    var(--bg-surface) 0%,
+    var(--bg-surface) 15%,
+    transparent 15%,
+    transparent 85%,
+    var(--bg-surface) 85%,
+    var(--bg-surface) 100%
+  );
+  border: 3px solid var(--primary-2);
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dialysis-machine::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 50%;
+  background: var(--primary-1);
+  border-radius: 8px;
+  animation: pulse-dialysis 2s ease-in-out infinite;
+}
+
+.dialysis-machine::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 60%;
+  height: 3px;
+  background: var(--primary-2);
+  border-radius: 2px;
+  animation: flow-dialysis 1.5s linear infinite;
+}
+
+@keyframes pulse-dialysis {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scaleY(1); }
+  50% { opacity: 1; transform: translateX(-50%) scaleY(1.1); }
+}
+
+@keyframes flow-dialysis {
+  0% { transform: translateX(0); opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { transform: translateX(20px); opacity: 0.8; }
+}
+
+@media (max-width: 768px) {
+  .kidney-graphic {
+    width: 120px;
+    height: 170px;
+    opacity: 0.1;
+  }
+
+  .dialysis-animation-container {
+    width: 80px;
+    height: 120px;
+    bottom: 5%;
+    right: 5%;
+  }
 }
 
 .hero-blur {
   position: absolute;
   inset: 0;
   backdrop-filter: blur(4px);
+}
+
+[data-theme="daylight"] .hero-blur {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme]:not([data-theme="daylight"]) .hero-blur {
   background: rgba(11, 16, 32, 0.7);
 }
 
