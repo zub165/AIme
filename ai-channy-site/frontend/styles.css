@@ -1,14 +1,83 @@
-:root {
-  --red: #ef4444;
-  --red-dark: #dc2626;
-  --blue: #3b82f6;
-  --blue-dark: #2563eb;
-  --dark-bg: #0b1020;
-  --dark-surface: #1a1f35;
+/* Default Theme (Dark Red/Blue) */
+:root,
+[data-theme="dark"] {
+  --primary-1: #ef4444;
+  --primary-1-dark: #dc2626;
+  --primary-2: #3b82f6;
+  --primary-2-dark: #2563eb;
+  --bg-main: #0b1020;
+  --bg-surface: #1a1f35;
   --text-light: #ffffff;
   --text-muted: #a1a1aa;
   --sidebar-bg: #f3f4f6;
   --border: #2d3748;
+}
+
+/* Daylight Theme */
+[data-theme="daylight"] {
+  --primary-1: #f59e0b;
+  --primary-1-dark: #d97706;
+  --primary-2: #fbbf24;
+  --primary-2-dark: #f59e0b;
+  --bg-main: #fefce8;
+  --bg-surface: #fff9c4;
+  --text-light: #1c1917;
+  --text-muted: #57534e;
+  --sidebar-bg: #fef3c7;
+  --border: #e7c200;
+}
+
+/* Ocean Theme */
+[data-theme="ocean"] {
+  --primary-1: #06b6d4;
+  --primary-1-dark: #0891b2;
+  --primary-2: #0ea5e9;
+  --primary-2-dark: #0284c7;
+  --bg-main: #0c1222;
+  --bg-surface: #1a2642;
+  --text-light: #ffffff;
+  --text-muted: #94a3b8;
+  --sidebar-bg: #e0f2fe;
+  --border: #1e3a8a;
+}
+
+/* Sunset Theme */
+[data-theme="sunset"] {
+  --primary-1: #f97316;
+  --primary-1-dark: #ea580c;
+  --primary-2: #ec4899;
+  --primary-2-dark: #db2777;
+  --bg-main: #1a0f0f;
+  --bg-surface: #2d1b1b;
+  --text-light: #ffffff;
+  --text-muted: #fca5a5;
+  --sidebar-bg: #fef3f2;
+  --border: #7f1d1d;
+}
+
+/* Forest Theme */
+[data-theme="forest"] {
+  --primary-1: #10b981;
+  --primary-1-dark: #059669;
+  --primary-2: #84cc16;
+  --primary-2-dark: #65a30d;
+  --bg-main: #0a1512;
+  --bg-surface: #1a2e24;
+  --text-light: #ffffff;
+  --text-muted: #86efac;
+  --sidebar-bg: #ecfdf5;
+  --border: #14532d;
+}
+
+/* Legacy variable names for compatibility */
+:root,
+[data-theme] {
+  --red: var(--primary-1);
+  --red-dark: var(--primary-1-dark);
+  --blue: var(--primary-2);
+  --blue-dark: var(--primary-2-dark);
+  --dark-bg: var(--bg-main);
+  --dark-surface: var(--bg-surface);
 }
 
 * {
@@ -21,8 +90,9 @@ body {
   font-family: 'Sora', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--text-light);
   line-height: 1.6;
-  background: var(--dark-bg);
+  background: var(--bg-main);
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -59,7 +129,7 @@ body {
 .logo-square {
   width: 48px;
   height: 48px;
-  background: var(--red);
+  background: var(--primary-1);
   color: white;
   display: flex;
   align-items: center;
@@ -67,6 +137,7 @@ body {
   font-weight: 900;
   font-size: 1.25rem;
   border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
 .sidebar-nav {
@@ -90,8 +161,23 @@ body {
 
 .nav-icon:hover,
 .nav-icon.active {
-  color: var(--red);
-  background: rgba(239, 68, 68, 0.1);
+  color: var(--primary-1);
+  background: rgba(var(--primary-1-rgb, 239, 68, 68), 0.1);
+}
+
+.theme-toggle {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #4b5563;
+  transition: all 0.3s;
+}
+
+.theme-toggle:hover {
+  color: var(--primary-1);
+  background: rgba(var(--primary-1-rgb, 239, 68, 68), 0.1);
+  transform: rotate(15deg);
 }
 
 .sidebar-social {
@@ -124,8 +210,9 @@ body {
 .hero-background {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(59, 130, 246, 0.2) 100%),
+  background: linear-gradient(135deg, var(--primary-1) 0%, var(--primary-2) 100%),
               url('https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1920&q=80') center/cover;
+  opacity: 0.25;
 }
 
 .hero-blur {
@@ -150,10 +237,13 @@ body {
   margin-bottom: 2rem;
   text-transform: uppercase;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, var(--blue) 0%, var(--red) 100%);
+  background: linear-gradient(90deg, var(--primary-2) 0%, var(--primary-1) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -171,7 +261,7 @@ body {
 
 .dna-medical {
   height: 44px;
-  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  background: linear-gradient(135deg, var(--primary-2), var(--primary-2-dark));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,7 +302,7 @@ body {
 
 .ecg-wave {
   height: 44px;
-  background: linear-gradient(135deg, var(--red), var(--red-dark));
+  background: linear-gradient(135deg, var(--primary-1), var(--primary-1-dark));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -259,16 +349,16 @@ body {
 .btn-glow {
   display: inline-block;
   padding: 1rem 2rem;
-  background: linear-gradient(90deg, var(--blue) 0%, var(--red) 100%);
+  background: linear-gradient(90deg, var(--primary-2) 0%, var(--primary-1) 100%);
   color: white;
   text-decoration: none;
   font-weight: 700;
   font-size: 1.05rem;
   border-radius: 10px;
   transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
-.btn-glow:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(239, 68, 68, 0.5); }
+.btn-glow:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4); }
 .btn-outline {
   display: inline-block;
   padding: 1rem 2rem;
@@ -286,11 +376,11 @@ body {
 /* Content Sections */
 .content-section {
   padding: 6rem 0;
-  background: var(--dark-bg);
+  background: var(--bg-main);
 }
 
 .content-section.alt {
-  background: var(--dark-surface);
+  background: var(--bg-surface);
 }
 
 .content-section h2 {
@@ -322,7 +412,7 @@ body {
 }
 
 .card {
-  background: var(--dark-surface);
+  background: var(--bg-surface);
   padding: 2.5rem;
   border-radius: 16px;
   border: 1px solid var(--border);
@@ -332,7 +422,7 @@ body {
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 .card::after {
@@ -341,7 +431,8 @@ body {
   inset: -1px;
   border-radius: 16px;
   padding: 1px;
-  background: linear-gradient(90deg, rgba(239,68,68,0.35), rgba(59,130,246,0.35));
+  background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+  opacity: 0.35;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -371,7 +462,7 @@ body {
   content: '•';
   position: absolute;
   left: 0;
-  color: var(--red);
+  color: var(--primary-1);
   font-weight: bold;
   font-size: 1.5rem;
 }
@@ -380,7 +471,7 @@ body {
 .btn {
   display: inline-block;
   padding: 0.875rem 2rem;
-  background: linear-gradient(90deg, var(--blue) 0%, var(--red) 100%);
+  background: linear-gradient(90deg, var(--primary-2) 0%, var(--primary-1) 100%);
   color: white;
   text-decoration: none;
   border-radius: 8px;
@@ -393,7 +484,7 @@ body {
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .btn.small {
@@ -410,7 +501,7 @@ body {
 }
 
 .badge {
-  background: linear-gradient(90deg, var(--red) 0%, var(--blue) 100%);
+  background: linear-gradient(90deg, var(--primary-1) 0%, var(--primary-2) 100%);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -427,7 +518,7 @@ body {
 }
 
 .app-card {
-  background: var(--dark-surface);
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 2.5rem;
@@ -436,12 +527,13 @@ body {
 
 .app-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 .app-card.featured {
-  border: 2px solid var(--red);
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(59, 130, 246, 0.1));
+  border: 2px solid var(--primary-1);
+  background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+  opacity: 0.1;
 }
 
 .ambulance-animation {
@@ -484,12 +576,12 @@ body {
 }
 
 .btn-mywaitine {
-  background: linear-gradient(90deg, var(--red) 0%, var(--red-dark) 100%) !important;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5) !important;
+  background: linear-gradient(90deg, var(--primary-1) 0%, var(--primary-1-dark) 100%) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
 }
 
 .btn-mywaitine:hover {
-  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.7) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
   transform: translateY(-3px) !important;
 }
 
@@ -524,10 +616,10 @@ body {
 
 /* Info Box */
 .info-box {
-  background: var(--dark-surface);
+  background: var(--bg-surface);
   padding: 2.5rem;
   border-radius: 16px;
-  border-left: 4px solid var(--blue);
+  border-left: 4px solid var(--primary-2);
   margin-top: 2rem;
 }
 
@@ -573,7 +665,7 @@ body {
 .contact-form input,
 .contact-form textarea {
   padding: 1rem;
-  background: var(--dark-surface);
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: 8px;
   font-family: inherit;
@@ -585,7 +677,7 @@ body {
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  border-color: var(--red);
+  border-color: var(--primary-1);
 }
 
 .contact-form input::placeholder,
@@ -594,11 +686,12 @@ body {
 }
 
 .success {
-  background: rgba(59, 130, 246, 0.2);
-  color: var(--blue);
+  background: var(--primary-2);
+  opacity: 0.2;
+  color: var(--primary-2);
   padding: 1rem;
   border-radius: 8px;
-  border: 1px solid var(--blue);
+  border: 1px solid var(--primary-2);
   margin-top: 1rem;
 }
 
@@ -609,7 +702,7 @@ body {
 }
 
 .tiny a {
-  color: var(--red);
+  color: var(--primary-1);
   text-decoration: none;
 }
 
@@ -619,7 +712,7 @@ body {
 
 /* Footer */
 .site-footer {
-  background: var(--dark-surface);
+  background: var(--bg-surface);
   padding: 3rem 0;
   border-top: 1px solid var(--border);
 }
@@ -650,7 +743,7 @@ body {
 }
 
 .footer-links a:hover {
-  color: var(--red);
+  color: var(--primary-1);
 }
 
 /* Floating Chat Button */
@@ -658,7 +751,7 @@ body {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background: var(--red);
+  background: var(--primary-1);
   color: white;
   padding: 1rem 1.5rem;
   border-radius: 50px;
@@ -667,14 +760,14 @@ body {
   gap: 0.75rem;
   text-decoration: none;
   font-weight: 600;
-  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   z-index: 999;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .floating-chat:hover {
   transform: translateY(-4px);
-  box-shadow: 0 6px 30px rgba(239, 68, 68, 0.6);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
 }
 
 .floating-chat i {
@@ -698,7 +791,7 @@ body {
 }
 
 .modal-dialog {
-  background: var(--dark-surface);
+  background: var(--bg-surface);
   border-radius: 16px;
   width: 100%;
   max-width: 1000px;

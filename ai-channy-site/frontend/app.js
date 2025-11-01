@@ -97,3 +97,32 @@ if (form) {
     }
   });
 }
+
+// Theme Switcher
+const themes = ['dark', 'daylight', 'ocean', 'sunset', 'forest'];
+let currentThemeIndex = 0;
+
+// Load saved theme from localStorage
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme && themes.includes(savedTheme)) {
+  currentThemeIndex = themes.indexOf(savedTheme);
+  document.documentElement.setAttribute('data-theme', savedTheme);
+} else {
+  document.documentElement.setAttribute('data-theme', themes[0]);
+}
+
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    const newTheme = themes[currentThemeIndex];
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    // Visual feedback
+    themeToggle.style.transform = 'rotate(360deg)';
+    setTimeout(() => {
+      themeToggle.style.transform = '';
+    }, 300);
+  });
+}
