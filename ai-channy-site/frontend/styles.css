@@ -529,20 +529,20 @@ body {
 .hero-blur {
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(4px);
+  /* Avoid backdrop-filter noise/grain on some displays */
+  background: rgba(11, 16, 32, 0.58);
 }
 
 [data-theme="daylight"] .hero-blur {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(2px);
+  background: rgba(255, 255, 255, 0.10);
 }
 
 [data-theme]:not([data-theme="daylight"]) .hero-blur {
-  background: rgba(11, 16, 32, 0.7);
+  background: rgba(11, 16, 32, 0.58);
 }
 
 [data-theme="twilight"] .hero-blur {
-  background: rgba(7, 8, 22, 0.55);
+  background: rgba(7, 8, 22, 0.50);
 }
 
 .hero-content {
