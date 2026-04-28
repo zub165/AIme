@@ -177,6 +177,20 @@
 
     let turns = [];
 
+    function getApiBase() {
+      const qs = new URLSearchParams(window.location.search);
+      const fromQuery = (qs.get('api') || '').trim();
+      if (fromQuery) return fromQuery.replace(/\/$/, '');
+
+      const fromStorage = (localStorage.getItem('aimeApiBase') || '').trim();
+      if (fromStorage) return fromStorage.replace(/\/$/, '');
+
+      // Default to your GoDaddy backend domain (Django should expose /api/chat and /api/contact)
+      return 'https://drmalik.ai';
+    }
+
+    const API_BASE = getApiBase();
+
     function addMessage(role, content) {
       const div = document.createElement('div');
       div.className = `message ${role}`;
@@ -216,7 +230,7 @@
       messagesEl.appendChild(loading);
 
       try {
-        const r = await fetch('/api/chat', {
+        const r = await fetch(`${API_BASE}/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ turns })

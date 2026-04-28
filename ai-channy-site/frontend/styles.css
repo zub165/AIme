@@ -905,6 +905,11 @@ body {
   font-size: 0.875rem;
 }
 
+.app-card .btn.small {
+  margin-right: 0.5rem;
+  margin-top: 0.25rem;
+}
+
 /* Badges */
 .badges {
   display: flex;

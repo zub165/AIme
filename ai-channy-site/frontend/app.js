@@ -72,6 +72,12 @@ if (form) {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
     
+    const getApiBase = () => {
+      const fromStorage = (localStorage.getItem('aimeApiBase') || '').trim();
+      if (fromStorage) return fromStorage.replace(/\/$/, '');
+      return 'https://drmalik.ai';
+    };
+
     const fallbackSend = async () => {
       const subject = encodeURIComponent(`AIme Contact — ${data.name || 'Website visitor'}`);
       const body = encodeURIComponent(
@@ -91,7 +97,8 @@ if (form) {
     };
 
     try {
-      const response = await fetch('/api/contact', {
+      const apiBase = getApiBase();
+      const response = await fetch(`${apiBase}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -147,3 +154,7 @@ if (themeToggle) {
     }, 300);
   });
 }
+
+// Allow configuring the backend API base URL (for GitHub Pages -> GoDaddy/Django)
+// Set once in DevTools:
+// localStorage.setItem('aimeApiBase', 'https://drmalik.ai')
