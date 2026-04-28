@@ -72,6 +72,24 @@ if (form) {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
     
+    const fallbackSend = async () => {
+      const subject = encodeURIComponent(`AIme Contact — ${data.name || 'Website visitor'}`);
+      const body = encodeURIComponent(
+        `Name: ${data.name || ''}\nEmail: ${data.email || ''}\n\nMessage:\n${data.message || ''}\n`
+      );
+      // Opens a draft email (recipient can be filled by user)
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+
+      const successMsg = document.getElementById('contact-success');
+      if (successMsg) {
+        successMsg.textContent = 'Draft email opened. If it did not open, please copy your message and email us.';
+        successMsg.hidden = false;
+        setTimeout(() => {
+          successMsg.hidden = true;
+        }, 7000);
+      }
+    };
+
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -83,23 +101,24 @@ if (form) {
         form.reset();
         const successMsg = document.getElementById('contact-success');
         if (successMsg) {
+          successMsg.textContent = "Thanks — we'll get back to you soon.";
           successMsg.hidden = false;
           setTimeout(() => {
             successMsg.hidden = true;
           }, 5000);
         }
       } else {
-        alert('Could not send right now. Please email us directly.');
+        await fallbackSend();
       }
     } catch (error) {
       console.error('Contact form error:', error);
-      alert('Could not send right now. Please try again later.');
+      await fallbackSend();
     }
   });
 }
 
 // Theme Switcher
-const themes = ['daylight', 'dark', 'ocean', 'sunset', 'forest'];
+const themes = ['twilight', 'daylight', 'dark', 'ocean', 'sunset', 'forest'];
 let currentThemeIndex = 0;
 
 // Load saved theme from localStorage
@@ -108,9 +127,9 @@ if (savedTheme && themes.includes(savedTheme)) {
   currentThemeIndex = themes.indexOf(savedTheme);
   document.documentElement.setAttribute('data-theme', savedTheme);
 } else {
-  // Default to daylight (bright) theme
-  document.documentElement.setAttribute('data-theme', 'daylight');
-  currentThemeIndex = 0;
+  // Default to twilight theme
+  document.documentElement.setAttribute('data-theme', 'twilight');
+  currentThemeIndex = themes.indexOf('twilight');
 }
 
 const themeToggle = document.getElementById('theme-toggle');

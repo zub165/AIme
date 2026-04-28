@@ -9,7 +9,7 @@
   --bg-surface: #1a1f35;
   --text-light: #ffffff;
   --text-muted: #a1a1aa;
-  --sidebar-bg: #f3f4f6;
+  --sidebar-bg: rgba(255, 255, 255, 0.06);
   --border: #2d3748;
 }
 
@@ -25,6 +25,20 @@
   --text-muted: #333333;
   --sidebar-bg: #ffffff;
   --border: #d0d7de;
+}
+
+/* Twilight Theme — modern dark default */
+[data-theme="twilight"] {
+  --primary-1: #a855f7;
+  --primary-1-dark: #7c3aed;
+  --primary-2: #22d3ee;
+  --primary-2-dark: #06b6d4;
+  --bg-main: #070816;
+  --bg-surface: rgba(255, 255, 255, 0.06);
+  --text-light: #eef2ff;
+  --text-muted: rgba(238, 242, 255, 0.72);
+  --sidebar-bg: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.12);
 }
 
 /* Ocean Theme */
@@ -95,6 +109,46 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.sidebar,
+.card,
+.app-card,
+.info-box,
+.site-footer,
+.modal-dialog {
+  backdrop-filter: saturate(140%) blur(12px);
+}
+
+.nav-icon:focus-visible,
+.btn:focus-visible,
+.btn-glow:focus-visible,
+.btn-outline:focus-visible,
+.theme-toggle:focus-visible,
+.contact-form input:focus-visible,
+.contact-form textarea:focus-visible,
+.floating-chat:focus-visible {
+  outline: 3px solid rgba(34, 211, 238, 0.55);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 3000;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid var(--border);
+  color: var(--text-light);
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -120,6 +174,7 @@ body {
   align-items: center;
   padding: 2rem 0;
   z-index: 1000;
+  border-right: 1px solid var(--border);
 }
 
 .sidebar-logo {
@@ -159,6 +214,10 @@ body {
   border-radius: 8px;
 }
 
+[data-theme]:not([data-theme="daylight"]) .nav-icon {
+  color: rgba(238, 242, 255, 0.72);
+}
+
 .nav-icon:hover,
 .nav-icon.active {
   color: var(--primary-1);
@@ -192,8 +251,18 @@ body {
   transition: color 0.3s;
 }
 
+[data-theme]:not([data-theme="daylight"]) .social-icon {
+  color: rgba(238, 242, 255, 0.62);
+}
+
 .social-icon:hover {
   color: var(--red);
+}
+
+.social-icon[href="#"],
+.btn-mywaitine[href="#"] {
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 /* Hero Section */
@@ -204,7 +273,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
 }
 
@@ -472,6 +541,10 @@ body {
   background: rgba(11, 16, 32, 0.7);
 }
 
+[data-theme="twilight"] .hero-blur {
+  background: rgba(7, 8, 22, 0.55);
+}
+
 .hero-content {
   position: relative;
   z-index: 100;
@@ -482,6 +555,18 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.hero-content::before {
+  content: '';
+  position: absolute;
+  inset: -2rem;
+  background:
+    radial-gradient(900px 420px at 50% 35%, rgba(34, 211, 238, 0.14), transparent 60%),
+    radial-gradient(700px 380px at 30% 20%, rgba(168, 85, 247, 0.18), transparent 55%),
+    radial-gradient(600px 360px at 70% 55%, rgba(59, 130, 246, 0.10), transparent 55%);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .hero-title {
@@ -861,7 +946,21 @@ body {
 .app-card.featured {
   border: 2px solid var(--primary-1);
   background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
-  opacity: 0.1;
+  opacity: 1;
+}
+
+.app-card.featured .app-text,
+.app-card.featured h3 {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.app-card.featured .btn {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.app-card.featured .btn:hover {
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .ambulance-animation {
@@ -1015,8 +1114,8 @@ body {
 
 .success {
   background: var(--primary-2);
-  opacity: 0.2;
-  color: var(--primary-2);
+  opacity: 1;
+  color: white;
   padding: 1rem;
   border-radius: 8px;
   border: 1px solid var(--primary-2);
@@ -1250,5 +1349,16 @@ body {
   .floating-chat {
     bottom: 1rem;
     right: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
