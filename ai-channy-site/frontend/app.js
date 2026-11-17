@@ -83,8 +83,7 @@ if (form) {
       const body = encodeURIComponent(
         `Name: ${data.name || ''}\nEmail: ${data.email || ''}\n\nMessage:\n${data.message || ''}\n`
       );
-      // Opens a draft email (recipient can be filled by user)
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:info@innovatorsgeneration.com?subject=${subject}&body=${body}`;
 
       const successMsg = document.getElementById('contact-success');
       if (successMsg) {
