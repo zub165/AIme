@@ -716,7 +716,7 @@ textarea:focus-visible {
 }
 
 .about-media {
-  max-width: 460px;
+  max-width: 720px;
   margin-top: 2rem;
   padding: 1rem;
   border: 1px solid var(--border);
