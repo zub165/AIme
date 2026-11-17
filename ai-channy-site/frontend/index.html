@@ -4,55 +4,431 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dr. Zubair Malik | Nephrology &amp; Internal Medicine</title>
-
   <meta name="description" content="Professional nephrology and internal medicine information, consultations, kidney and blood pressure care, and clinician-focused medical AI tools." />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
-  <!-- OpenGraph -->
-  <meta property="og:title" content="Dr. Zubair Malik | Nephrology &amp; Internal Medicine">
-  <meta property="og:description" content="Professional nephrology and internal medicine information, consultations, kidney and blood pressure care, and clinician-focused medical AI tools.">
-  <meta property="og:type" content="website">
+  <meta property="og:title" content="Dr. Zubair Malik | Nephrology &amp; Internal Medicine" />
+  <meta property="og:description" content="Professional nephrology and internal medicine information, consultations, kidney and blood pressure care, and clinician-focused medical AI tools." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root,
+    [data-theme="daylight"] {
+      --bg: #f5f8fc;
+      --surface: #fff;
+      --ink: #10243b;
+      --muted: #64758b;
+      --line: #e2eaf2;
+      --navy: #0b2f56;
+      --blue: #1765a5;
+      --teal: #087f86;
+      --gold: #e9aa35;
+      --shadow: 0 18px 50px rgba(15, 45, 80, .09);
+    }
+
+    [data-theme="twilight"],
+    [data-theme="dark"],
+    [data-theme="ocean"],
+    [data-theme="sunset"],
+    [data-theme="forest"] {
+      --bg: var(--bg-main);
+      --surface: var(--bg-surface);
+      --ink: var(--text-light);
+      --muted: var(--text-muted);
+      --line: var(--border);
+      --shadow: 0 18px 50px rgba(0, 0, 0, .28);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, system-ui, sans-serif;
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    button, input, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible { outline: 3px solid #e9aa35; outline-offset: 3px; }
+
+    .skip-link { position: absolute; left: 1rem; top: -100px; background: #fff; padding: 1rem; z-index: 100; }
+    .skip-link:focus { top: 1rem; }
+
+    .sidebar {
+      position: fixed;
+      z-index: 30;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 86px;
+      background: #082c4c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 23px 10px;
+      box-shadow: 8px 0 28px #10243b10;
+    }
+    .sidebar-logo { margin-bottom: 34px; }
+    .logo-square {
+      width: 49px;
+      height: 49px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      color: #082c4c;
+      background: linear-gradient(135deg, #ffd37b, #f4a623);
+      font-weight: 900;
+      font-family: Sora, sans-serif;
+    }
+    .sidebar-nav { display: flex; flex-direction: column; align-items: center; gap: 13px; width: 100%; }
+    .nav-icon {
+      width: 47px;
+      height: 47px;
+      border: 0;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: transparent;
+      color: #bbd1e2;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 18px;
+      transition: .2s;
+    }
+    .nav-icon:hover,
+    .nav-icon.active { background: #ffffff20; color: white; }
+    .nav-icon.active::before { content: none; }
+    .theme-toggle { margin-top: 12px; }
+    .main-content { margin-left: 86px; min-height: 100vh; }
+    .container { max-width: 1180px; margin: auto; padding: 0 36px; }
+
+    .hero-section {
+      position: relative;
+      min-height: 690px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: linear-gradient(112deg, #082c4c 4%, #104f78 63%, #087f86 100%);
+      color: white;
+    }
+    .hero-background { position: absolute; inset: 0; pointer-events: none; }
+    .bg-img {
+      position: absolute;
+      right: -6%;
+      top: 0;
+      height: 100%;
+      width: 54%;
+      object-fit: cover;
+      opacity: .19;
+      -webkit-mask-image: linear-gradient(to right, transparent, black 38%);
+      mask-image: linear-gradient(to right, transparent, black 38%);
+    }
+    .hero-glow { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .25; }
+    .hero-glow-one { width: 400px; height: 400px; background: #43d6d1; right: 0; top: 0; }
+    .hero-glow-two { width: 240px; height: 240px; background: #f9b44b; left: 15%; bottom: -150px; }
+    .hero-blur { position: absolute; inset: 0; background: linear-gradient(90deg, #082c4cbb, transparent); }
+    .hero-content { position: relative; z-index: 1; width: min(1150px, 100%); margin: auto; padding: 90px 56px; }
+    .hero-eyebrow,
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: .75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+    }
+    .hero-eyebrow {
+      color: #b8e7ec;
+      background: #ffffff13;
+      border: 1px solid #ffffff28;
+      padding: 9px 15px;
+      border-radius: 99px;
+    }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #f9bf53; }
+    h2,
+    .content-section h2 {
+      font-family: Sora, Inter, sans-serif;
+      font-size: clamp(1.8rem, 3.3vw, 2.9rem);
+      line-height: 1.2;
+      letter-spacing: -.04em;
+      margin: 12px 0 20px;
+    }
+    .hero-title {
+      font-family: Sora, Inter, sans-serif;
+      font-size: clamp(2.6rem, 5vw, 5.4rem);
+      line-height: 1.13;
+      letter-spacing: -.065em;
+      max-width: 920px;
+      margin: 26px 0 15px;
+    }
+    .gradient-text {
+      background: linear-gradient(100deg, #fff 30%, #b5eff1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-tagline { font-weight: 700; color: #f6c66f; font-size: 1.1rem; }
+    .hero-description { max-width: 650px; font-size: 1.12rem; color: #d6e6f2; margin: 20px 0 30px; }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 13px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 47px;
+      padding: 12px 22px;
+      background: var(--teal);
+      color: #fff;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      font-size: .91rem;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .2s, background .2s, box-shadow .2s;
+    }
+    .btn:hover { transform: translateY(-2px); background: #066c72; box-shadow: 0 10px 20px #00000015; }
+    .btn-glow { background: #f2b84b; color: #122b45; }
+    .btn-glow:hover { background: #ffcc68; }
+    .btn-outline { background: #ffffff12; border-color: #ffffff65; }
+    .btn-outline:hover { background: #ffffff25; }
+    .hero-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 820px;
+      gap: 16px;
+      margin-top: 56px;
+    }
+    .highlight {
+      padding: 18px;
+      border: 1px solid #ffffff24;
+      background: #ffffff0d;
+      border-radius: 14px;
+      backdrop-filter: blur(10px);
+    }
+    .highlight strong,
+    .highlight span { display: block; }
+    .highlight strong { font-size: .88rem; }
+    .highlight span { color: #c2d8e6; font-size: .78rem; margin-top: 3px; }
+
+    .content-section { padding: 86px 0; }
+    .content-section.alt { background: #edf4f9; }
+    .section-kicker { color: var(--teal); }
+    .section-text,
+    .section-sub { max-width: 750px; color: var(--muted); font-size: 1.02rem; }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+    .badge {
+      background: #e5f4f4;
+      color: #08676e;
+      border: 1px solid #c9e8e9;
+      padding: 7px 13px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: .79rem;
+    }
+    .about-media { margin-top: 30px; max-width: 560px; padding: 0; border: 0; background: transparent; box-shadow: none; }
+    .about-media img { display: block; max-width: 100%; height: auto; border-radius: 18px; box-shadow: var(--shadow); }
+    .about-caption,
+    .tiny { font-size: .8rem; color: var(--muted); }
+
+    .workspace-section { padding: 22px 0 0; background: var(--bg); }
+    .tab-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 10px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+    .tab-button {
+      padding: 12px 19px;
+      border: 0;
+      border-radius: 11px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .tab-button.active,
+    .tab-button[aria-selected="true"] { background: var(--navy); color: white; }
+    .cards,
+    .app-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 32px; }
+    .card,
+    .app-card,
+    .info-box {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover,
+    .app-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px #10243b1a; }
+    .card { display: flex; flex-direction: column; align-items: flex-start; }
+    .card::before,
+    .app-card::before { content: none; }
+    .card h3,
+    .app-card h3 { font-family: Sora, sans-serif; font-size: 1.22rem; margin: 0 0 12px; letter-spacing: -.025em; }
+    .card ul { margin: 0 0 22px; padding-left: 20px; color: var(--muted); flex: 1; }
+    .card li { padding: 3px 0; }
+    .card ul li { padding-left: 0; }
+    .card ul li::before { content: none; }
+    .app-card.featured { background: linear-gradient(135deg, #0c3457, #0c6675); color: white; }
+    [data-theme] .app-card.featured .app-text,
+    [data-theme] .app-card.featured h3 { color: #d9eaf2; }
+    .app-text { color: var(--muted); }
+    [data-theme] .app-card.featured .btn { background: var(--teal); border-color: transparent; color: #fff; }
+    .app-card .btn { margin: 8px 7px 0 0; }
+    .btn.small { font-size: .8rem; padding: 8px 12px; min-height: 40px; }
+
+    .chat-embed { height: 650px; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); background: white; }
+    .chat-embed iframe { width: 100%; height: 100%; border: 0; }
+    .info-box { max-width: 850px; }
+    .disclaimer { color: var(--muted); font-size: .87rem; }
+
+    .contact-form {
+      display: grid;
+      gap: 14px;
+      max-width: 720px;
+      margin-top: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid #cddbe6;
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .contact-form .btn { justify-self: start; }
+    .success {
+      margin-top: .5rem;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #087f86;
+    }
+
+    .site-footer { padding: 40px 0; background: #092b4b; color: white; }
+    .footer-content { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+    .footer-brand { font-weight: 800; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { color: #c4e1ef; text-decoration: none; }
+    .site-footer .tiny { color: #bed3e0; max-width: 540px; }
+    .floating-chat {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f0b64a;
+      color: #17324a;
+      padding: 14px 20px;
+      border-radius: 99px;
+      text-decoration: none;
+      font-weight: 800;
+      box-shadow: 0 10px 35px #061f3960;
+    }
+    .modal { display: none; }
+    .modal[aria-hidden="false"] {
+      display: grid;
+      position: fixed;
+      inset: 0;
+      background: #0009;
+      z-index: 90;
+      place-items: center;
+    }
+    .modal-dialog { width: min(1000px, 94vw); height: min(85vh, 850px); background: #fff; border-radius: 18px; overflow: hidden; position: relative; }
+    .modal-dialog iframe { width: 100%; height: 100%; border: 0; }
+    .modal-dialog .close { position: absolute; top: 10px; right: 12px; z-index: 2; border: 0; background: #fff; font-size: 25px; cursor: pointer; }
+    [hidden] { display: none !important; }
+
+    [data-theme="twilight"] .content-section.alt,
+    [data-theme="dark"] .content-section.alt,
+    [data-theme="ocean"] .content-section.alt,
+    [data-theme="sunset"] .content-section.alt,
+    [data-theme="forest"] .content-section.alt { background: var(--bg-alt); }
+    [data-theme="twilight"] .badge,
+    [data-theme="dark"] .badge,
+    [data-theme="ocean"] .badge,
+    [data-theme="sunset"] .badge,
+    [data-theme="forest"] .badge { background: #123c42; color: #a7ebed; border-color: #285b60; }
+
+    @media (max-width: 850px) {
+      .sidebar { width: 100%; height: 68px; bottom: auto; flex-direction: row; justify-content: space-between; padding: 8px 15px; }
+      .sidebar-logo { margin: 0; }
+      .logo-square { width: 43px; height: 43px; }
+      .sidebar-nav { flex-direction: row; gap: 3px; width: auto; overflow-x: auto; }
+      .nav-icon { width: 39px; height: 43px; font-size: 15px; flex-shrink: 0; }
+      .main-content { margin-left: 0; padding-top: 68px; }
+      .hero-section { min-height: 590px; }
+      .hero-content { padding: 75px 28px; }
+      .hero-highlights { margin-top: 35px; }
+      .container { padding: 0 24px; }
+    }
+
+    @media (max-width: 580px) {
+      .sidebar-nav .nav-icon:nth-child(2),
+      .sidebar-nav .nav-icon:nth-child(5) { display: none; }
+      .hero-content { padding: 55px 22px; }
+      .hero-title { font-size: 2.55rem; }
+      .hero-highlights { grid-template-columns: 1fr; gap: 8px; }
+      .highlight { padding: 10px 14px; }
+      .content-section { padding: 58px 0; }
+      .cards,
+      .app-grid { grid-template-columns: 1fr; }
+      .container { padding: 0 18px; }
+      .card,
+      .app-card { padding: 23px; }
+      .tab-button { flex: 1; padding: 10px; }
+      .footer-content { flex-direction: column; }
+      .floating-chat { bottom: 12px; right: 12px; padding: 11px 14px; font-size: .8rem; }
+      .chat-embed { height: 560px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *:before, *:after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#home">Skip to content</a>
-  <!-- Left Sidebar -->
+
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-square">AM</div>
+      <div class="logo-square">ZM</div>
     </div>
     <nav class="sidebar-nav">
-      <a href="#home" class="nav-icon active" title="Home">
-        <i class="fas fa-home"></i>
-      </a>
-      <a href="#about" class="nav-icon" title="About">
-        <i class="fas fa-user"></i>
-      </a>
-      <a href="#services" class="nav-icon" title="Services">
-        <i class="fas fa-eye"></i>
-      </a>
-      <a href="#apps" class="nav-icon" title="Medical Apps">
-        <i class="fas fa-users"></i>
-      </a>
-      <a href="#consultations" class="nav-icon" title="Consultations">
-        <i class="fas fa-heart"></i>
-      </a>
-      <a href="#contact" class="nav-icon" title="Contact">
-        <i class="fas fa-envelope"></i>
-      </a>
-      <a href="sunstate.html" class="nav-icon" title="Sunstate Patient Site">
-        <i class="fas fa-hospital"></i>
-      </a>
-      <button class="nav-icon theme-toggle" id="theme-toggle" title="Change Theme">
-        <i class="fas fa-palette"></i>
-      </button>
-      </nav>
+      <a href="#home" class="nav-icon active" title="Home"><i class="fas fa-home"></i></a>
+      <a href="#about" class="nav-icon" title="About"><i class="fas fa-user"></i></a>
+      <a href="#services" class="nav-icon" title="Services"><i class="fas fa-eye"></i></a>
+      <a href="#apps" class="nav-icon" title="Medical Apps"><i class="fas fa-users"></i></a>
+      <a href="#consultations" class="nav-icon" title="Consultations"><i class="fas fa-heart"></i></a>
+      <a href="#contact" class="nav-icon" title="Contact"><i class="fas fa-envelope"></i></a>
+      <a href="sunstate.html" class="nav-icon" title="Sunstate Patient Site"><i class="fas fa-hospital"></i></a>
+      <button class="nav-icon theme-toggle" id="theme-toggle" type="button" title="Change Theme"><i class="fas fa-palette"></i></button>
+    </nav>
   </aside>
 
-  <!-- Main Content -->
   <main class="main-content">
-    <!-- Hero Section -->
     <section id="home" class="hero-section">
       <div class="hero-background" aria-hidden="true">
         <img src="assets/sunstate-kidney-services.png" alt="" class="bg-img" />
@@ -77,12 +453,11 @@
       </div>
     </section>
 
-    <!-- About Section -->
     <section id="about" class="content-section">
       <div class="container">
         <span class="section-kicker">About</span>
         <h2>Clinical insight, made practical.</h2>
-        <p class="section-text">Nephrologist & Internist focused on practical, guideline-anchored care, community health, and clinician education. Creator of digital tools that make complex renal decisions simpler at the bedside.</p>
+        <p class="section-text">Nephrologist &amp; Internist focused on practical, guideline-anchored care, community health, and clinician education. Creator of digital tools that make complex renal decisions simpler at the bedside.</p>
         <p class="section-text"><em>Interests:</em> CKD risk reduction, dialysis decision support, electrolyte disorders, clinical AI.</p>
         <div class="badges">
           <span class="badge">MD • FASN • FACP</span>
@@ -90,7 +465,7 @@
           <span class="badge">Kidney &amp; Blood Pressure Care</span>
         </div>
         <div class="about-media">
-          <img src="assets/doctor-profile-degrees.jpg" alt="Dr. Zubair Malik — IM/Nephrology, Sunstate Kidney & Hypertension, King Edward Medical University Lahore" width="1289" height="869" loading="lazy" />
+          <img src="assets/doctor-profile-degrees.jpg" alt="Dr. Zubair Malik — IM/Nephrology, Sunstate Kidney &amp; Hypertension, King Edward Medical University Lahore" width="1289" height="869" loading="lazy" />
           <p class="about-caption">Dr. Zubair Malik — MD, FASN, FACP • Nephrology &amp; Internal Medicine</p>
         </div>
       </div>
@@ -107,38 +482,37 @@
       </div>
     </section>
 
-    <!-- Services Section -->
     <section id="services" class="content-section alt" data-tab-panel="services">
-    <div class="container">
+      <div class="container">
         <span class="section-kicker">Services</span>
         <h2>Focused expertise when it matters.</h2>
-      <p class="section-sub">Focused expertise in kidney disease and complex internal medicine.</p>
-      <div class="cards">
-        <div class="card">
+        <p class="section-sub">Focused expertise in kidney disease and complex internal medicine.</p>
+        <div class="cards">
+          <div class="card">
             <h3>Nephrology Consult</h3>
-          <ul>
+            <ul>
               <li>CKD staging, risk reduction, anemia</li>
               <li>CKD-MBD, HTN in CKD</li>
               <li>Shared decision-making</li>
-          </ul>
+            </ul>
             <a class="btn" href="#contact">Book</a>
-        </div>
-        <div class="card">
-          <h3>Internal Medicine Consult</h3>
-          <ul>
+          </div>
+          <div class="card">
+            <h3>Internal Medicine Consult</h3>
+            <ul>
               <li>Multi-morbid patients</li>
               <li>Diagnostic clarification</li>
               <li>Care plans aligned with guidelines</li>
-          </ul>
+            </ul>
             <a class="btn" href="#contact">Book</a>
-        </div>
-        <div class="card">
+          </div>
+          <div class="card">
             <h3>Case Review</h3>
-          <ul>
+            <ul>
               <li>AKI/CKD complexity</li>
               <li>Electrolyte disorders</li>
-            <li>Written summary with references</li>
-          </ul>
+              <li>Written summary with references</li>
+            </ul>
             <a class="btn" href="#contact">Submit</a>
           </div>
           <div class="card">
@@ -154,7 +528,6 @@
       </div>
     </section>
 
-    <!-- Apps Section -->
     <section id="apps" class="content-section" data-tab-panel="apps" hidden>
       <div class="container">
         <span class="section-kicker">Medical Applications</span>
@@ -188,75 +561,70 @@
       </div>
     </section>
 
-    <!-- Inline AI Chat Section -->
     <section id="chat" class="content-section alt" data-tab-panel="chat" hidden>
-    <div class="container">
+      <div class="container">
         <span class="section-kicker">AI Assistant</span>
         <h2>Clinical AI for nephrology questions.</h2>
         <p class="section-sub">Ask clinical questions, draft plans, and explore guideline-cited answers.</p>
         <div class="chat-embed">
           <iframe title="Clinical nephrology AI chat" src="ai.html" loading="lazy" allow="clipboard-write; fullscreen"></iframe>
         </div>
-        <p class="tiny">By using the AI, you agree to the <a href="privacy.html">Terms & Privacy</a>. Educational use only.</p>
-    </div>
-  </section>
+        <p class="tiny">By using the AI, you agree to the <a href="privacy.html">Terms &amp; Privacy</a>. Educational use only.</p>
+      </div>
+    </section>
 
-    <!-- Consultations Section -->
     <section id="consultations" class="content-section alt" data-tab-panel="consultations" hidden>
       <div class="container">
         <span class="section-kicker">Consultations</span>
         <h2>Evidence-first care and guidance.</h2>
-        <p class="section-sub">Evidence-first care in Nephrology & Internal Medicine.</p>
+        <p class="section-sub">Evidence-first care in Nephrology &amp; Internal Medicine.</p>
         <div class="info-box">
-          <p>Clinical consultations, education, and a safe AI copilot trained on KDIGO/KDOQI & major guidelines—anchored to how Dr. Malik practices.</p>
+          <p>Clinical consultations, education, and a safe AI copilot trained on KDIGO/KDOQI &amp; major guidelines—anchored to how Dr. Malik practices.</p>
           <p class="disclaimer">Educational tool; not a substitute for in-person medical care. In emergencies, call local services.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="content-section">
-    <div class="container">
-      <span class="section-kicker">Contact</span>
-      <h2>Let's start a conversation.</h2>
-      <form id="contact-form" class="contact-form">
-        <input type="text" name="name" placeholder="Your name" required />
-        <input type="email" name="email" placeholder="Your email" required />
-        <textarea name="message" rows="5" placeholder="How can we help?" required></textarea>
+      <div class="container">
+        <span class="section-kicker">Contact</span>
+        <h2>Let's start a conversation.</h2>
+        <p class="section-sub">Email <a href="mailto:info@innovatorsgeneration.com">info@innovatorsgeneration.com</a> or call <a href="tel:+14072551758">(407) 255-1758</a>.</p>
+        <form id="contact-form" class="contact-form">
+          <input type="text" name="name" placeholder="Your name" required />
+          <input type="email" name="email" placeholder="Your email" required />
+          <textarea name="message" rows="5" placeholder="How can we help?" required></textarea>
           <button class="btn" type="submit">Send Message</button>
-        <div id="contact-success" class="success" hidden>Thanks — we'll get back to you soon.</div>
-      </form>
-    </div>
-  </section>
+          <div id="contact-success" class="success" hidden>Thanks — we'll get back to you soon.</div>
+        </form>
+      </div>
+    </section>
 
-    <!-- Footer -->
     <footer class="site-footer">
       <div class="container">
         <div class="footer-content">
-      <div>
+          <div>
             <div class="footer-brand">Dr. Zubair Malik — Nephrology</div>
-        <p class="tiny">Educational content only; not a substitute for in-person medical care. If this is an emergency, call local services.</p>
-      </div>
+            <p class="tiny">Educational content only; not a substitute for in-person medical care. If this is an emergency, call local services.</p>
+          </div>
           <div class="footer-links">
             <a href="sunstate.html">Sunstate</a>
             <a href="privacy.html">Privacy</a>
             <a href="terms.html">Terms</a>
           </div>
+        </div>
       </div>
-    </div>
-  </footer>
+    </footer>
   </main>
 
-  <!-- Floating Chat Button -->
   <a href="ai.html" class="floating-chat" title="Open clinical AI tool">
     <i class="fas fa-comment-dots"></i>
     <span>Clinical AI</span>
   </a>
 
-  <!-- AI Modal (kept for compatibility) -->
   <div id="ai-modal" class="modal" aria-hidden="true">
     <div class="modal-dialog">
-      <button class="close" id="close-ai" aria-label="Close">×</button>
+      <button class="close" id="close-ai" type="button" aria-label="Close">×</button>
       <iframe id="ai-frame" title="AI Dr. Malik" src="ai.html" loading="lazy"></iframe>
     </div>
   </div>
