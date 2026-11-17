@@ -1,498 +1,534 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI-Dr. Malik Chat</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sunstate | AI Medical Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: #f8f9fa;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+    :root {
+      color-scheme: light;
+      --bg: #f3f7fb;
+      --panel: #fff;
+      --ink: #142c4c;
+      --muted: #65758b;
+      --line: #e1eaf2;
+      --brand: #075d9b;
+      --brand2: #008a9a;
+      --soft: #edf7fb;
+      --bubble: #f0f5fa;
+      --shadow: 0 18px 50px #153a6512;
     }
-    .chat-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      max-width: 900px;
+
+    body.dark {
+      color-scheme: dark;
+      --bg: #0b1524;
+      --panel: #142238;
+      --ink: #e8f2fb;
+      --muted: #a1b2c6;
+      --line: #2b4057;
+      --brand: #4ba9ee;
+      --brand2: #41c6bc;
+      --soft: #1c3547;
+      --bubble: #203149;
+      --shadow: none;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: Inter, system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--ink); }
+    button, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #e5a72c; outline-offset: 2px; }
+
+    .app {
+      max-width: 1280px;
       margin: 0 auto;
+      min-height: 100dvh;
+      padding: 22px;
+      display: grid;
+      grid-template-columns: 265px minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .sidebar, .main {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar { display: flex; flex-direction: column; padding: 22px; gap: 22px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brandmark {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #ffbc39, #f69d22);
+      font-size: 26px;
+      color: #103f69;
+    }
+    .brand b { display: block; font-size: 18px; }
+    .brand small { display: block; font-size: 11px; line-height: 1.5; color: var(--muted); }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+      margin: 0 0 10px;
+    }
+    .new {
       width: 100%;
-      padding: 1rem;
-    }
-    .chat-header {
-      background: white;
-      padding: 1rem;
-      border-bottom: 1px solid #e0e0e0;
-      border-radius: 8px 8px 0 0;
-    }
-    .chat-header h2 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #1a1a1a;
-    }
-    .chat-header p {
-      font-size: 0.875rem;
-      color: #666;
-      margin-top: 0.25rem;
-    }
-    .session-bar {
-      display: flex;
-      gap: 0.4rem;
-      padding: 0.55rem 0.75rem;
-      overflow-x: auto;
-      background: #ffffff;
-      border: 1px solid #e0e0e0;
-      border-top: 0;
-      border-radius: 0 0 8px 8px;
-    }
-    .session-tab {
-      max-width: 170px;
-      padding: 0.4rem 0.8rem;
-      overflow: hidden;
-      border: 1px solid #d1d5db;
-      border-radius: 999px;
-      background: #f8fafc;
-      color: #475569;
-      font: inherit;
-      font-size: 0.8rem;
+      padding: 12px;
+      border: 0;
+      border-radius: 12px;
+      color: white;
+      background: linear-gradient(110deg, #086da7, #008a9a);
       font-weight: 700;
+    }
+    .sessions { display: flex; flex-direction: column; gap: 6px; overflow: auto; max-height: 45dvh; }
+    .session {
+      width: 100%;
+      text-align: left;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      padding: 11px 12px;
+      background: transparent;
+      color: var(--muted);
+      overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      cursor: pointer;
     }
-    .session-tab.active {
-      border-color: #0f766e;
-      background: #0f766e;
-      color: #ffffff;
+    .session.active { background: var(--soft); border-color: var(--line); color: var(--ink); font-weight: 700; }
+    .sidebottom { margin-top: auto; display: grid; gap: 12px; }
+    .notice {
+      border: 1px solid var(--line);
+      background: var(--soft);
+      padding: 13px;
+      border-radius: 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
     }
-    .session-tab.add {
-      flex: 0 0 auto;
-      border-style: dashed;
-      background: #ecfeff;
-      color: #0f766e;
-    }
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      background: white;
-      padding: 1.5rem;
+    .theme { background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 11px; padding: 10px; }
+    .main { display: flex; flex-direction: column; min-height: calc(100dvh - 44px); overflow: hidden; }
+    .top {
       display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .message {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .message.user {
-      align-items: flex-end;
-    }
-    .message.assistant {
-      align-items: flex-start;
-    }
-    .message-bubble {
-      max-width: 75%;
-      padding: 0.75rem 1rem;
-      border-radius: 12px;
-      line-height: 1.5;
-    }
-    .message.user .message-bubble {
-      background: #2563eb;
-      color: white;
-    }
-    .message.assistant .message-bubble {
-      background: #f1f5f9;
-      color: #1a1a1a;
-      border: 1px solid #e2e8f0;
-    }
-    .message.assistant .message-bubble pre {
-      background: #1e293b;
-      color: #e2e8f0;
-      padding: 0.75rem;
-      border-radius: 6px;
-      overflow-x: auto;
-      margin-top: 0.5rem;
-    }
-    .chat-input {
-      background: white;
-      padding: 1rem;
-      border-top: 1px solid #e0e0e0;
-      border-radius: 0 0 8px 8px;
-    }
-    .input-group {
-      display: flex;
-      gap: 0.5rem;
-    }
-    .input-group textarea {
-      flex: 1;
-      padding: 0.75rem;
-      border: 1px solid #d0d0d0;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.9375rem;
-      resize: none;
-      min-height: 44px;
-      max-height: 120px;
-    }
-    .input-group textarea:focus {
-      outline: none;
-      border-color: #2563eb;
-    }
-    .input-group button {
-      padding: 0.75rem 1.5rem;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .input-group button:hover {
-      background: #1d4ed8;
-    }
-    .input-group button:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-    }
-    .loading {
-      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
-      color: #666;
-      font-size: 0.875rem;
+      gap: 12px;
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--line);
     }
-    .loading::after {
-      content: '';
-      width: 16px;
-      height: 16px;
-      border: 2px solid #e2e8f0;
-      border-top-color: #2563eb;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .suggestions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 0.75rem;
-    }
-    .suggestions button {
-      padding: 0.35rem 0.7rem;
-      border: 1px solid #cbd5e1;
+    .top h1 { font-size: 20px; margin: 0 0 5px; }
+    .top p { font-size: 12px; margin: 0; color: var(--muted); }
+    .status {
+      font-size: 12px;
+      color: #087e69;
+      background: #e7f8f0;
       border-radius: 999px;
-      background: #f8fafc;
-      color: #0f766e;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
+      padding: 8px 12px;
+      font-weight: 700;
+      white-space: nowrap;
     }
-    .suggestions button:hover {
-      background: #ecfdf5;
-      border-color: #0d9488;
+    .chat {
+      flex: 1;
+      min-height: 340px;
+      max-height: calc(100dvh - 290px);
+      overflow-y: auto;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
     }
-    .error {
-      background: #fee2e2;
-      color: #991b1b;
-      padding: 0.75rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
+    .welcome { margin: auto; text-align: center; max-width: 550px; padding: 25px; }
+    .welcome .symbol { font-size: 40px; display: block; margin-bottom: 14px; }
+    .welcome h2 { font-size: 27px; margin: 0 0 12px; }
+    .welcome p { font-size: 14px; line-height: 1.8; color: var(--muted); }
+    .message { display: flex; gap: 10px; align-items: flex-start; }
+    .message.user { flex-direction: row-reverse; }
+    .avatar {
+      flex: 0 0 33px;
+      height: 33px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--soft);
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .message.user .avatar { background: #dbeafe; color: #1e40af; }
+    .bubble {
+      max-width: min(78%, 720px);
+      border-radius: 4px 17px 17px 17px;
+      padding: 13px 17px;
+      line-height: 1.7;
+      background: var(--bubble);
+      font-size: 14px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .user .bubble { border-radius: 17px 4px 17px 17px; background: #086aa4; color: white; }
+    .bubble strong { font-weight: 800; }
+    .bubble pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .bottom { border-top: 1px solid var(--line); padding: 16px 28px 20px; }
+    .suggestions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .suggestions[hidden], .error[hidden] { display: none; }
+    .suggestions button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--ink);
+      padding: 9px 12px;
+      font-size: 12px;
+    }
+    .composer {
+      display: flex;
+      gap: 10px;
+      align-items: end;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 9px;
+      background: var(--panel);
+    }
+    .composer:focus-within { border-color: var(--brand2); }
+    textarea {
+      flex: 1;
+      min-width: 0;
+      min-height: 42px;
+      max-height: 150px;
+      resize: none;
+      border: 0;
+      outline: none !important;
+      background: transparent;
+      color: var(--ink);
+      padding: 11px;
+      font-size: 14px;
+    }
+    .send {
+      background: linear-gradient(130deg, #086aa4, #008b9b);
+      color: #fff;
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 19px;
+      font-weight: 700;
+    }
+    .send:disabled { opacity: .5; cursor: wait; }
+    .error { padding: 10px 13px; background: #fee8e8; color: #991b1b; border-radius: 10px; margin-bottom: 10px; font-size: 13px; }
+    .footnote { font-size: 11px; text-align: center; color: var(--muted); margin: 12px 0 0; }
+    .mobile-new { display: none; }
+
+    @media (max-width: 760px) {
+      .app { display: block; padding: 0; }
+      .sidebar { border-radius: 0; box-shadow: none; padding: 12px 15px; gap: 10px; }
+      .sidebar .section-label, .sidebar .new, .sidebar .notice, .sidebar .theme { display: none; }
+      .sessions { flex-direction: row; max-height: none; overflow-x: auto; }
+      .session { width: auto; max-width: 160px; flex: 0 0 auto; }
+      .sidebottom { display: none; }
+      .main { min-height: calc(100dvh - 128px); border-radius: 0; border: 0; }
+      .top { padding: 15px; }
+      .top h1 { font-size: 16px; }
+      .status { font-size: 10px; }
+      .chat { padding: 16px; max-height: calc(100dvh - 330px); }
+      .bottom { padding: 12px; }
+      .bubble { max-width: 85%; }
+      .mobile-new { display: inline-block; border: 1px solid var(--line); background: var(--soft); color: var(--ink); border-radius: 8px; padding: 7px 9px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *:before, *:after { animation: none !important; transition: none !important; }
     }
   </style>
 </head>
 <body>
-  <div class="chat-container">
-    <div class="chat-header">
-      <h2>AI-Dr. Malik (Nephrology & Internal Medicine)</h2>
-      <p>Educational tool for clinicians. Not a substitute for clinical judgment.</p>
-    </div>
-    <div class="session-bar" id="session-bar"></div>
-    <div class="chat-messages" id="messages"></div>
-    <div class="chat-input">
-      <div id="error" class="error" hidden></div>
-      <div id="suggestions" class="suggestions" hidden>
-        <button type="button" data-question="What is acute kidney injury (AKI)?">What is AKI?</button>
-        <button type="button" data-question="What does my eGFR number mean?">eGFR explained</button>
-        <button type="button" data-question="I have swelling in my feet and less urine — what should I do?">Swelling &amp; less urine</button>
-        <button type="button" data-question="What questions should I ask my kidney doctor?">Questions for my doctor</button>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brandmark" aria-hidden="true">☀</div>
+        <div><b>Sunstate</b><small>Kidney &amp; Hypertension</small></div>
       </div>
-      <div class="input-group">
-        <textarea id="input" placeholder="Ask about renal dosing, electrolytes, guidelines..." rows="1"></textarea>
-        <button id="send">Send</button>
+      <div>
+        <p class="section-label">Conversations</p>
+        <button class="new" id="new" type="button">＋ New conversation</button>
+        <nav class="sessions" id="sessions" aria-label="Conversations"></nav>
       </div>
-    </div>
+      <div class="sidebottom">
+        <div class="notice">Educational support only. Do not enter identifiable patient information. For emergencies, seek immediate medical care.</div>
+        <button class="theme" id="theme" type="button">◐ Toggle dark mode</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="top">
+        <div>
+          <h1 id="heading">AI-Dr. Malik Assistant</h1>
+          <p id="subtitle">Nephrology &amp; Internal Medicine · Educational support</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="status">● AI Assistant</span>
+          <button class="mobile-new" id="mobileNew" type="button" aria-label="New conversation">＋</button>
+        </div>
+      </header>
+      <section class="chat" id="messages" aria-live="polite"></section>
+      <section class="bottom">
+        <div id="error" class="error" role="alert" hidden></div>
+        <div class="suggestions" id="suggestions">
+          <button type="button" data-question="What is acute kidney injury (AKI)?">What is AKI?</button>
+          <button type="button" data-question="What does my eGFR number mean?">Understanding eGFR</button>
+          <button type="button" data-question="What questions should I ask my kidney doctor?">Questions for my doctor</button>
+          <button type="button" data-question="Explain hypertension in CKD">Blood pressure &amp; CKD</button>
+        </div>
+        <div class="composer">
+          <textarea id="input" rows="1" aria-label="Your question" placeholder="Ask about kidney health, blood pressure, or guidelines..."></textarea>
+          <button id="send" class="send" type="button">Send ↑</button>
+        </div>
+        <p class="footnote">AI-generated information may be inaccurate. Verify clinical decisions with qualified professionals.</p>
+      </section>
+    </main>
   </div>
 
   <script>
-    const messagesEl = document.getElementById('messages');
-    const sessionBar = document.getElementById('session-bar');
-    const inputEl = document.getElementById('input');
-    const sendBtn = document.getElementById('send');
-    const errorEl = document.getElementById('error');
-    const params = new URLSearchParams(window.location.search);
+    const $ = id => document.getElementById(id);
+    const params = new URLSearchParams(location.search);
     const audience = params.get('audience');
-    const patientGreeting = 'Hello! I can explain kidney and blood pressure topics in plain language and suggest questions to ask your care team. I am not a doctor — this is educational information only, not medical advice. What would you like to know?';
-
-    let sessions = [];
-    let activeSessionId = null;
-    let sessionCounter = 0;
-
-    function createSession(name) {
-      sessionCounter += 1;
-      const session = { id: sessionCounter, name: name || `Chat ${sessionCounter}`, turns: [], messages: [] };
-      sessions.push(session);
-      return session.id;
-    }
-
-    function activeSession() {
-      return sessions.find(session => session.id === activeSessionId) || sessions[0];
-    }
-
-    function recordMessage(role, content) {
-      const session = activeSession();
-      session.messages.push({ role, content });
-      if (role === 'user' || role === 'assistant') session.turns.push({ role, content });
-    }
-
-    createSession('Chat 1');
-    activeSessionId = sessions[0].id;
-
-    const configuredBase = (params.get('api') || localStorage.getItem('aimeApiBase') || '').trim().replace(/\/$/, '');
+    const rawBase = (params.get('api') || localStorage.getItem('aimeApiBase') || '').trim().replace(/\/$/, '');
+    const configuredBase = /drmalik\.ai/i.test(rawBase) ? '' : rawBase;
     const engine = (params.get('engine') || localStorage.getItem('aimeEngine') || 'ml').toLowerCase();
     const API_BASE = configuredBase || 'https://api.docsoncalls.com/ml';
     const USE_ML = engine === 'ml' && !configuredBase;
 
-    function format(content) {
-      let text = String(content).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      return text.replace(/\n/g, '<br>');
+    let sessions = [];
+    let activeId = 0;
+    let nextId = 0;
+    let busy = false;
+    const patientGreeting = 'Hello! I can explain kidney and blood pressure topics in plain language and suggest questions to ask your care team. I am not a doctor. This is educational information, not medical advice. What would you like to know?';
+
+    function createSession() {
+      const session = { id: ++nextId, name: `Chat ${nextId}`, turns: [], messages: [] };
+      if (audience === 'patient') session.messages.push({ role: 'assistant', content: patientGreeting });
+      sessions.push(session);
+      return session.id;
     }
 
-    function appendMessage(role, content) {
-      const div = document.createElement('div');
-      div.className = `message ${role}`;
-      const bubble = document.createElement('div');
-      bubble.className = 'message-bubble';
-      bubble.innerHTML = format(content);
-      div.appendChild(bubble);
-      messagesEl.appendChild(div);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-      return bubble;
-    }
-
-    function addMessage(role, content, record = true) {
-      const bubble = appendMessage(role, content);
-      if (record) recordMessage(role, content);
-      return bubble;
-    }
-
-    function renderMessages() {
-      messagesEl.innerHTML = '';
-      activeSession().messages.forEach(message => appendMessage(message.role, message.content));
-    }
-
-    function switchSession(id) {
-      activeSessionId = id;
-      renderSessionTabs();
-      renderMessages();
-      inputEl.focus();
+    function active() {
+      return sessions.find(session => session.id === activeId);
     }
 
     function newSession() {
-      activeSessionId = createSession();
-      if (audience === 'patient') activeSession().messages.push({ role: 'assistant', content: patientGreeting });
-      switchSession(activeSessionId);
+      if (busy) return;
+      activeId = createSession();
+      render();
     }
 
-    function renderSessionTabs() {
-      sessionBar.innerHTML = '';
+    function switchSession(id) {
+      if (busy) return;
+      activeId = id;
+      render();
+    }
+
+    function renderTabs() {
+      const nav = $('sessions');
+      nav.replaceChildren();
       sessions.forEach(session => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = `session-tab${session.id === activeSessionId ? ' active' : ''}`;
-        button.textContent = session.name;
+        button.className = 'session' + (session.id === activeId ? ' active' : '');
+        button.textContent = '◷ ' + session.name;
         button.title = session.name;
         button.onclick = () => switchSession(session.id);
-        sessionBar.appendChild(button);
+        nav.append(button);
       });
-      const add = document.createElement('button');
-      add.type = 'button';
-      add.className = 'session-tab add';
-      add.textContent = '+ New';
-      add.title = 'Start a new chat';
-      add.onclick = newSession;
-      sessionBar.appendChild(add);
     }
 
-    function createStreamingMessage() {
-      const div = document.createElement('div');
-      div.className = 'message assistant';
-      const bubble = document.createElement('div');
-      bubble.className = 'message-bubble';
-      div.appendChild(bubble);
-      messagesEl.appendChild(div);
-      return { div, bubble };
+    function bubble(role, content) {
+      const article = document.createElement('article');
+      article.className = 'message ' + role;
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = role === 'user' ? 'You' : 'AI';
+      const body = document.createElement('div');
+      body.className = 'bubble';
+      body.textContent = content;
+      article.append(avatar, body);
+      $('messages').append(article);
+      $('messages').scrollTop = $('messages').scrollHeight;
+      return { el: article, body };
     }
 
-    async function streamChat(bubble) {
+    function render() {
+      renderTabs();
+      $('messages').replaceChildren();
+      const session = active();
+      if (!session.messages.length) {
+        const welcome = document.createElement('div');
+        welcome.className = 'welcome';
+        welcome.innerHTML = '<span class="symbol">☀</span><h2>How can I help today?</h2><p>Explore kidney health, hypertension, clinical questions, and evidence-informed care. Select a suggested topic or write your question below.</p>';
+        $('messages').append(welcome);
+      } else {
+        session.messages.forEach(message => bubble(message.role, message.content));
+      }
+      $('input').focus();
+    }
+
+    function add(role, content) {
+      active().messages.push({ role, content });
+      return bubble(role, content);
+    }
+
+    function showError(text) {
+      $('error').textContent = text;
+      $('error').hidden = false;
+    }
+
+    function clearError() {
+      $('error').hidden = true;
+    }
+
+    async function streamChat(turns, update) {
       const response = await fetch(`${API_BASE}/api/chat/stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ turns: activeSession().turns })
+        body: JSON.stringify({ turns })
       });
-      if (!response.ok) throw new Error('Stream unavailable');
+      if (!response.ok || !response.body) throw Error('Stream unavailable');
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
       let raw = '';
-      let complete = false;
-      while (!complete) {
+      let done = false;
+      while (!done) {
         const chunk = await reader.read();
         if (chunk.done) break;
         buffer += decoder.decode(chunk.value, { stream: true });
-        const events = buffer.split('\n\n');
+        const events = buffer.split(/\r?\n\r?\n/);
         buffer = events.pop();
         for (const event of events) {
-          const line = event.split('\n').find(part => part.startsWith('data: '));
+          const line = event.split(/\r?\n/).find(part => part.startsWith('data:'));
           if (!line) continue;
           let payload;
-          try { payload = JSON.parse(line.slice(6)); } catch (e) { continue; }
-          if (payload.error) throw new Error(payload.error);
-          if (payload.done) { complete = true; break; }
-          if (payload.token) {
-            raw += payload.token;
-            bubble.innerHTML = format(raw);
-            messagesEl.scrollTop = messagesEl.scrollHeight;
-          }
+          try { payload = JSON.parse(line.slice(5).trim()); } catch (error) { continue; }
+          if (payload.error) throw Error(payload.error);
+          if (payload.done) { done = true; break; }
+          if (payload.token) { raw += payload.token; update(raw); }
         }
       }
       return raw;
     }
 
-    if (audience === 'patient') {
-      document.title = 'Ask a Question | Sunstate Kidney & Hypertension';
-      document.querySelector('.chat-header h2').textContent = 'Sunstate AI Assistant';
-      document.querySelector('.chat-header p').textContent = 'Plain-language answers about kidney and blood pressure care. Educational only — not medical advice.';
-      inputEl.placeholder = 'Ask a question (e.g. What does my eGFR mean?)';
-      document.getElementById('suggestions').hidden = false;
-      activeSession().messages.push({ role: 'assistant', content: patientGreeting });
-      document.querySelectorAll('#suggestions button').forEach(button => {
-        button.onclick = () => {
-          inputEl.value = button.dataset.question;
-          sendMessage();
-        };
+    async function getReply(turns, text, update) {
+      if (USE_ML) {
+        try {
+          const streamed = await streamChat(turns, update);
+          if (streamed.trim()) return streamed.trim();
+        } catch (error) {
+          console.warn('Streaming unavailable; using fallback', error);
+          update('');
+        }
+        const response = await fetch(`${API_BASE}/api/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ turns })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.reply?.trim()) return data.reply.trim();
+        }
+        const fallback = await fetch(`${API_BASE}/consult`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: text, include_takeaway: true, max_results: 4 })
+        });
+        if (!fallback.ok) throw Error('Backend unavailable');
+        const data = await fallback.json();
+        return (data.takeaway || data.evidence_summary || '').trim();
+      }
+      const response = await fetch(`${API_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ turns })
       });
-    }
-
-    renderSessionTabs();
-    renderMessages();
-
-    function showError(msg) {
-      errorEl.textContent = msg;
-      errorEl.hidden = false;
-      setTimeout(() => { errorEl.hidden = true; }, 5000);
+      if (!response.ok) throw Error('Backend unavailable');
+      return ((await response.json()).reply || '').trim();
     }
 
     async function sendMessage() {
-      const text = inputEl.value.trim();
+      if (busy) return;
+      const text = $('input').value.trim();
       if (!text) return;
-
-      inputEl.value = '';
-      inputEl.style.height = 'auto';
-      sendBtn.disabled = true;
-      const session = activeSession();
-      addMessage('user', text);
-      if (session.turns.filter(turn => turn.role === 'user').length === 1) {
-        session.name = text.length > 24 ? `${text.slice(0, 24)}…` : text;
-        renderSessionTabs();
+      clearError();
+      busy = true;
+      $('send').disabled = true;
+      $('input').value = '';
+      $('input').style.height = 'auto';
+      const session = active();
+      if (!session.turns.length) {
+        session.name = text.length > 27 ? text.slice(0, 27) + '…' : text;
+        renderTabs();
       }
-
-      const loading = document.createElement('div');
-      loading.className = 'message assistant';
-      const loadingBubble = document.createElement('div');
-      loadingBubble.className = 'message-bubble loading';
-      loadingBubble.textContent = 'Thinking...';
-      loading.appendChild(loadingBubble);
-      messagesEl.appendChild(loading);
-
-      let reply = '';
-      let streamView = null;
+      const welcome = $('messages').querySelector('.welcome');
+      if (welcome) welcome.remove();
+      add('user', text);
+      session.turns.push({ role: 'user', content: text });
+      const view = bubble('assistant', 'Thinking…');
       try {
-        if (USE_ML) {
-          try {
-            if (loading.parentNode === messagesEl) messagesEl.removeChild(loading);
-            streamView = createStreamingMessage();
-            reply = (await streamChat(streamView.bubble)).trim();
-            if (!reply) throw new Error('Empty stream');
-          } catch (streamError) {
-            console.warn('Streaming unavailable, falling back', streamError);
-            if (streamView && streamView.div.parentNode === messagesEl) messagesEl.removeChild(streamView.div);
-            streamView = null;
-          }
-          if (!reply) {
-            const r = await fetch(`${API_BASE}/api/chat`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ turns: activeSession().turns })
-            });
-            if (r.ok) reply = ((await r.json()).reply || '').trim();
-            if (!reply) {
-              const fallback = await fetch(`${API_BASE}/consult`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: text, include_takeaway: true, max_results: 4 })
-              });
-              if (!fallback.ok) throw new Error(await fallback.text() || 'Server error');
-              const data = await fallback.json();
-              reply = (data.takeaway || data.evidence_summary || '').trim();
-            }
-          }
-          if (!reply) throw new Error('Empty response from ML backend');
-        } else {
-          const r = await fetch(`${API_BASE}/api/chat`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ turns: activeSession().turns })
-          });
-          if (!r.ok) throw new Error(await r.text() || 'Server error');
-          reply = ((await r.json()).reply || '').trim();
-        }
-        if (!reply) throw new Error('Empty response');
-        recordMessage('assistant', reply);
-        if (!streamView) appendMessage('assistant', reply);
-      } catch (e) {
-        showError('Failed to get response. Please try again.');
-        console.error(e);
+        const reply = await getReply([...session.turns], text, value => {
+          view.body.textContent = value || 'Thinking…';
+        });
+        if (!reply) throw Error('Empty response');
+        view.body.textContent = reply;
+        session.messages.push({ role: 'assistant', content: reply });
+        session.turns.push({ role: 'assistant', content: reply });
+      } catch (error) {
+        view.el.remove();
+        showError('Unable to get a response. Check the server connection and try again.');
+        console.error(error);
       } finally {
-        if (loading.parentNode === messagesEl) messagesEl.removeChild(loading);
-        sendBtn.disabled = false;
-        inputEl.focus();
+        busy = false;
+        $('send').disabled = false;
+        $('input').focus();
       }
     }
 
-    sendBtn.onclick = sendMessage;
-    inputEl.onkeydown = (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
+    $('new').onclick = newSession;
+    $('mobileNew').onclick = newSession;
+    $('send').onclick = sendMessage;
+    $('input').onkeydown = event => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
         sendMessage();
       }
     };
-
-    // Auto-resize textarea
-    inputEl.addEventListener('input', () => {
-      inputEl.style.height = 'auto';
-      inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
+    $('input').addEventListener('input', () => {
+      const input = $('input');
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 150) + 'px';
     });
+    document.querySelectorAll('[data-question]').forEach(button => {
+      button.onclick = () => {
+        $('input').value = button.dataset.question;
+        sendMessage();
+      };
+    });
+    $('theme').onclick = () => {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('sunstateTheme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    };
+    if (localStorage.getItem('sunstateTheme') === 'dark') document.body.classList.add('dark');
+    if (audience === 'patient') {
+      $('heading').textContent = 'Sunstate AI Assistant';
+      $('subtitle').textContent = 'Kidney & blood pressure education · Not medical advice';
+      document.title = 'Sunstate | Patient AI Assistant';
+    } else {
+      $('suggestions').hidden = true;
+    }
+    activeId = createSession();
+    render();
   </script>
 </body>
 </html>
-
