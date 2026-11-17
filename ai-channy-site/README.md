@@ -6,11 +6,22 @@ A professional website for Dr. Zubair Malik, MD, featuring:
 - Sunstate Kidney & Hypertension patient page with plain-language AI chat and a CKD lab-risk estimate
 - Privacy and Terms pages
 
+## Production
+
+- Frontend: `https://zub165.github.io/AIme/`
+- API base: `https://api.docsoncalls.com/ml`
+- Contact: `POST /api/contact` sends to `info@innovatorsgeneration.com`
+- Chat: `POST /api/chat`, `POST /api/chat/stream`
+- Lab estimate: `POST /api/chat/predict`
+
 ## Project Structure
 
 ```
 ai-channy-site/
 ├── frontend/
+│   ├── assets/             # Local medical images
+│   │   ├── sunstate-kidney-logo.png
+│   │   └── sunstate-kidney-services.png
 │   ├── index.html          # Main landing page
 │   ├── ai.html             # AI chat interface (iframe)
 │   ├── sunstate.html       # Sunstate Kidney & Hypertension patient page
@@ -131,11 +142,11 @@ sudo chown -R www-data:www-data /var/www/ai-channy-site
 ```
 
 5. **Configure Nginx:**
-Create `/etc/nginx/sites-available/drmalik.ai` (see deployment instructions in main conversation)
+Use `/etc/nginx/sites-available/api.docsoncalls.com` with `/api/` routed to Django and `/ml/` routed to the ML platform.
 
 6. **Set up SSL:**
 ```bash
-sudo certbot --nginx -d drmalik.ai -d www.drmalik.ai
+sudo certbot --nginx -d api.docsoncalls.com
 ```
 
 ## Environment Variables

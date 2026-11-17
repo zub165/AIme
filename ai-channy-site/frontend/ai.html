@@ -40,6 +40,42 @@
       color: #666;
       margin-top: 0.25rem;
     }
+    .session-bar {
+      display: flex;
+      gap: 0.4rem;
+      padding: 0.55rem 0.75rem;
+      overflow-x: auto;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-top: 0;
+      border-radius: 0 0 8px 8px;
+    }
+    .session-tab {
+      max-width: 170px;
+      padding: 0.4rem 0.8rem;
+      overflow: hidden;
+      border: 1px solid #d1d5db;
+      border-radius: 999px;
+      background: #f8fafc;
+      color: #475569;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .session-tab.active {
+      border-color: #0f766e;
+      background: #0f766e;
+      color: #ffffff;
+    }
+    .session-tab.add {
+      flex: 0 0 auto;
+      border-style: dashed;
+      background: #ecfeff;
+      color: #0f766e;
+    }
     .chat-messages {
       flex: 1;
       overflow-y: auto;
@@ -179,6 +215,7 @@
       <h2>AI-Dr. Malik (Nephrology & Internal Medicine)</h2>
       <p>Educational tool for clinicians. Not a substitute for clinical judgment.</p>
     </div>
+    <div class="session-bar" id="session-bar"></div>
     <div class="chat-messages" id="messages"></div>
     <div class="chat-input">
       <div id="error" class="error" hidden></div>
@@ -197,13 +234,38 @@
 
   <script>
     const messagesEl = document.getElementById('messages');
+    const sessionBar = document.getElementById('session-bar');
     const inputEl = document.getElementById('input');
     const sendBtn = document.getElementById('send');
     const errorEl = document.getElementById('error');
-
-    let turns = [];
-
     const params = new URLSearchParams(window.location.search);
+    const audience = params.get('audience');
+    const patientGreeting = 'Hello! I can explain kidney and blood pressure topics in plain language and suggest questions to ask your care team. I am not a doctor — this is educational information only, not medical advice. What would you like to know?';
+
+    let sessions = [];
+    let activeSessionId = null;
+    let sessionCounter = 0;
+
+    function createSession(name) {
+      sessionCounter += 1;
+      const session = { id: sessionCounter, name: name || `Chat ${sessionCounter}`, turns: [], messages: [] };
+      sessions.push(session);
+      return session.id;
+    }
+
+    function activeSession() {
+      return sessions.find(session => session.id === activeSessionId) || sessions[0];
+    }
+
+    function recordMessage(role, content) {
+      const session = activeSession();
+      session.messages.push({ role, content });
+      if (role === 'user' || role === 'assistant') session.turns.push({ role, content });
+    }
+
+    createSession('Chat 1');
+    activeSessionId = sessions[0].id;
+
     const configuredBase = (params.get('api') || localStorage.getItem('aimeApiBase') || '').trim().replace(/\/$/, '');
     const engine = (params.get('engine') || localStorage.getItem('aimeEngine') || 'ml').toLowerCase();
     const API_BASE = configuredBase || 'https://api.docsoncalls.com/ml';
@@ -215,7 +277,7 @@
       return text.replace(/\n/g, '<br>');
     }
 
-    function addMessage(role, content) {
+    function appendMessage(role, content) {
       const div = document.createElement('div');
       div.className = `message ${role}`;
       const bubble = document.createElement('div');
@@ -225,6 +287,50 @@
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
       return bubble;
+    }
+
+    function addMessage(role, content, record = true) {
+      const bubble = appendMessage(role, content);
+      if (record) recordMessage(role, content);
+      return bubble;
+    }
+
+    function renderMessages() {
+      messagesEl.innerHTML = '';
+      activeSession().messages.forEach(message => appendMessage(message.role, message.content));
+    }
+
+    function switchSession(id) {
+      activeSessionId = id;
+      renderSessionTabs();
+      renderMessages();
+      inputEl.focus();
+    }
+
+    function newSession() {
+      activeSessionId = createSession();
+      if (audience === 'patient') activeSession().messages.push({ role: 'assistant', content: patientGreeting });
+      switchSession(activeSessionId);
+    }
+
+    function renderSessionTabs() {
+      sessionBar.innerHTML = '';
+      sessions.forEach(session => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `session-tab${session.id === activeSessionId ? ' active' : ''}`;
+        button.textContent = session.name;
+        button.title = session.name;
+        button.onclick = () => switchSession(session.id);
+        sessionBar.appendChild(button);
+      });
+      const add = document.createElement('button');
+      add.type = 'button';
+      add.className = 'session-tab add';
+      add.textContent = '+ New';
+      add.title = 'Start a new chat';
+      add.onclick = newSession;
+      sessionBar.appendChild(add);
     }
 
     function createStreamingMessage() {
@@ -241,7 +347,7 @@
       const response = await fetch(`${API_BASE}/api/chat/stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ turns })
+        body: JSON.stringify({ turns: activeSession().turns })
       });
       if (!response.ok) throw new Error('Stream unavailable');
       const reader = response.body.getReader();
@@ -272,14 +378,13 @@
       return raw;
     }
 
-    const audience = new URLSearchParams(window.location.search).get('audience');
     if (audience === 'patient') {
       document.title = 'Ask a Question | Sunstate Kidney & Hypertension';
       document.querySelector('.chat-header h2').textContent = 'Sunstate AI Assistant';
       document.querySelector('.chat-header p').textContent = 'Plain-language answers about kidney and blood pressure care. Educational only — not medical advice.';
       inputEl.placeholder = 'Ask a question (e.g. What does my eGFR mean?)';
       document.getElementById('suggestions').hidden = false;
-      addMessage('assistant', 'Hello! I can explain kidney and blood pressure topics in plain language and suggest questions to ask your care team. I am not a doctor — this is educational information only, not medical advice. What would you like to know?');
+      activeSession().messages.push({ role: 'assistant', content: patientGreeting });
       document.querySelectorAll('#suggestions button').forEach(button => {
         button.onclick = () => {
           inputEl.value = button.dataset.question;
@@ -287,6 +392,9 @@
         };
       });
     }
+
+    renderSessionTabs();
+    renderMessages();
 
     function showError(msg) {
       errorEl.textContent = msg;
@@ -301,8 +409,12 @@
       inputEl.value = '';
       inputEl.style.height = 'auto';
       sendBtn.disabled = true;
+      const session = activeSession();
       addMessage('user', text);
-      turns.push({ role: 'user', content: text });
+      if (session.turns.filter(turn => turn.role === 'user').length === 1) {
+        session.name = text.length > 24 ? `${text.slice(0, 24)}…` : text;
+        renderSessionTabs();
+      }
 
       const loading = document.createElement('div');
       loading.className = 'message assistant';
@@ -330,7 +442,7 @@
             const r = await fetch(`${API_BASE}/api/chat`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ turns })
+              body: JSON.stringify({ turns: activeSession().turns })
             });
             if (r.ok) reply = ((await r.json()).reply || '').trim();
             if (!reply) {
@@ -349,14 +461,14 @@
           const r = await fetch(`${API_BASE}/api/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ turns })
+            body: JSON.stringify({ turns: activeSession().turns })
           });
           if (!r.ok) throw new Error(await r.text() || 'Server error');
           reply = ((await r.json()).reply || '').trim();
         }
         if (!reply) throw new Error('Empty response');
-        turns.push({ role: 'assistant', content: reply });
-        if (!streamView) addMessage('assistant', reply);
+        recordMessage('assistant', reply);
+        if (!streamView) appendMessage('assistant', reply);
       } catch (e) {
         showError('Failed to get response. Please try again.');
         console.error(e);

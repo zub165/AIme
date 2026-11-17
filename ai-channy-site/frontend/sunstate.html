@@ -17,7 +17,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#home" aria-label="Sunstate Kidney and Hypertension home">
-        <span class="brand-mark"><i class="fa-solid fa-sun"></i></span>
+        <img class="brand-logo" src="assets/sunstate-kidney-logo.png" alt="Sunstate Kidney Health logo" width="92" height="52" />
         <span class="brand-name">Sunstate Kidney <span>&amp; Hypertension</span></span>
       </a>
       <nav class="site-nav" aria-label="Main navigation">
@@ -49,7 +49,7 @@
           </div>
         </div>
         <div class="hero-visual">
-          <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1200&q=80" alt="Medical professionals discussing patient care" onerror="this.onerror=null;this.src='assets/kidney-real.png';" />
+          <img src="assets/sunstate-kidney-services.png" alt="Sunstate Kidney Care services overview" width="1536" height="1024" />
           <div class="visual-overlay">
             <span class="visual-chip">Kidney Health</span>
             <span class="visual-chip">Blood Pressure</span>
@@ -132,7 +132,17 @@
       </div>
     </section>
 
-    <section id="ask-ai" class="ask">
+    <section id="tools" class="tools-section">
+      <div class="container">
+        <div class="tab-bar" data-tab-bar role="tablist" aria-label="Patient tools">
+          <button type="button" class="tab-button active" data-tab-button="ask-ai" aria-selected="true">Ask AI</button>
+          <button type="button" class="tab-button" data-tab-button="lab-check" aria-selected="false">Lab Check</button>
+          <button type="button" class="tab-button" data-tab-button="contact" aria-selected="false">Contact</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="ask-ai" class="ask" data-tab-panel="ask-ai">
       <div class="container ask-grid">
         <div class="ask-copy">
           <span class="section-kicker">Have a Question?</span>
@@ -153,7 +163,7 @@
       </div>
     </section>
 
-    <section id="lab-check" class="lab">
+    <section id="lab-check" class="lab" data-tab-panel="lab-check" hidden>
       <div class="container">
         <div class="lab-card">
           <span class="section-kicker">Lab Check</span>
@@ -210,7 +220,7 @@
       </div>
     </section>
 
-    <section id="contact" class="contact">
+    <section id="contact" class="contact" data-tab-panel="contact" hidden>
       <div class="container contact-grid">
         <div>
           <span class="section-kicker">Get In Touch</span>
@@ -252,7 +262,7 @@
       <div class="footer-links">
         <a href="#home">Home</a>
         <a href="#services">Services</a>
-        <a href="index.html">AIme</a>
+        <a href="index.html">Dr. Zubair Malik</a>
         <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
       </div>

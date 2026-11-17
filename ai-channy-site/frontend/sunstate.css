@@ -60,16 +60,11 @@ a { color: inherit; text-decoration: none; }
   flex-shrink: 0;
 }
 
-.brand-mark {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  font-size: 1.35rem;
-  color: var(--white);
-  background: linear-gradient(135deg, var(--sun), var(--sun-dark) 55%, var(--teal));
-  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.25);
+.brand-logo {
+  width: 92px;
+  height: 52px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .brand-name {
@@ -210,8 +205,10 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   height: 100%;
   min-height: 420px;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
+  background: #f8fafc;
+  padding: 0.75rem;
 }
 
 .visual-overlay {
@@ -271,6 +268,45 @@ a { color: inherit; text-decoration: none; }
 }
 
 .section-head p { color: var(--muted); margin-top: 0.6rem; }
+
+.tools-section {
+  padding: 1.5rem 0 0;
+  background: #ffffff;
+}
+
+.tab-bar {
+  display: inline-flex;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.4rem;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--soft);
+}
+
+.tab-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1.15rem;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.tab-button.active {
+  background: var(--sun-dark);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 118, 110, 0.2);
+}
+
+[data-tab-panel][hidden] {
+  display: none !important;
+}
 
 .service-grid {
   display: grid;

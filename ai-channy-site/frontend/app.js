@@ -1,133 +1,136 @@
-// Smooth scroll for navigation links
+function setActiveTab(name) {
+  const buttons = Array.from(document.querySelectorAll('[data-tab-button]'));
+  if (!buttons.some(button => button.dataset.tabButton === name)) return;
+  buttons.forEach(button => {
+    button.classList.toggle('active', button.dataset.tabButton === name);
+    button.setAttribute('aria-selected', button.dataset.tabButton === name ? 'true' : 'false');
+  });
+  document.querySelectorAll('[data-tab-panel]').forEach(panel => {
+    panel.hidden = panel.dataset.tabPanel !== name;
+  });
+}
+
+document.querySelectorAll('[data-tab-button]').forEach(button => {
+  button.addEventListener('click', () => setActiveTab(button.dataset.tabButton));
+});
+
+const initialTab = window.location.hash.replace('#', '');
+if (initialTab) setActiveTab(initialTab);
+
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) setActiveTab(hash);
+});
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     const href = this.getAttribute('href');
     if (href === '#') return;
-    
+
     e.preventDefault();
     const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-      
-      // Update active nav icon
-      document.querySelectorAll('.nav-icon').forEach(icon => {
-        icon.classList.remove('active');
-      });
-      this.classList.add('active');
-    }
+    if (!target) return;
+
+    const scrollTarget = target.dataset.tabPanel ? document.querySelector('[data-tab-bar]')?.closest('section') || target : target;
+    if (target.dataset.tabPanel) setActiveTab(target.id);
+
+    scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.nav-icon').forEach(icon => icon.classList.remove('active'));
+    this.classList.add('active');
   });
 });
 
-// Update active nav on scroll
-const sections = document.querySelectorAll('.content-section, .hero-section');
+const sections = Array.from(document.querySelectorAll('.content-section, .hero-section, [data-tab-panel]'));
 const navIcons = document.querySelectorAll('.nav-icon');
 
 window.addEventListener('scroll', () => {
   let current = '';
   sections.forEach(section => {
-    const sectionTop = section.offsetTop;
-    const sectionHeight = section.clientHeight;
-    if (pageYOffset >= sectionTop - 200) {
-      current = section.getAttribute('id');
-    }
+    if (section.hidden || !section.clientHeight) return;
+    if (pageYOffset >= section.offsetTop - 200) current = section.getAttribute('id');
   });
 
   navIcons.forEach(icon => {
     icon.classList.remove('active');
-    const href = icon.getAttribute('href');
-    if (href === `#${current}`) {
-      icon.classList.add('active');
-    }
+    if (icon.getAttribute('href') === `#${current}`) icon.classList.add('active');
   });
 });
 
-// AI Modal functionality (if needed)
 const aiModal = document.getElementById('ai-modal');
 const closeAi = document.getElementById('close-ai');
 
 if (closeAi) {
   closeAi.addEventListener('click', () => {
-    if (aiModal) {
-      aiModal.setAttribute('aria-hidden', 'true');
-    }
+    if (aiModal) aiModal.setAttribute('aria-hidden', 'true');
   });
 }
 
-// Close modal on outside click
 if (aiModal) {
-  aiModal.addEventListener('click', (e) => {
-    if (e.target === aiModal) {
-      aiModal.setAttribute('aria-hidden', 'true');
-    }
+  aiModal.addEventListener('click', e => {
+    if (e.target === aiModal) aiModal.setAttribute('aria-hidden', 'true');
   });
 }
 
-// Contact form
 const form = document.getElementById('contact-form');
 if (form) {
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
-    
+    const successMsg = document.getElementById('contact-success');
+
     const getApiBase = () => {
       const fromStorage = (localStorage.getItem('aimeApiBase') || '').trim();
       if (fromStorage) return fromStorage.replace(/\/$/, '');
-      return 'https://drmalik.ai';
+      return 'https://api.docsoncalls.com/ml';
     };
 
-    const fallbackSend = async () => {
-      const subject = encodeURIComponent(`AIme Contact — ${data.name || 'Website visitor'}`);
-      const body = encodeURIComponent(
-        `Name: ${data.name || ''}\nEmail: ${data.email || ''}\n\nMessage:\n${data.message || ''}\n`
-      );
-      window.location.href = `mailto:info@innovatorsgeneration.com?subject=${subject}&body=${body}`;
+    const showSuccess = text => {
+      if (!successMsg) return;
+      successMsg.textContent = text;
+      successMsg.hidden = false;
+      setTimeout(() => { successMsg.hidden = true; }, 6000);
+    };
 
-      const successMsg = document.getElementById('contact-success');
-      if (successMsg) {
-        successMsg.textContent = 'Draft email opened. If it did not open, please copy your message and email us.';
-        successMsg.hidden = false;
-        setTimeout(() => {
-          successMsg.hidden = true;
-        }, 7000);
-      }
+    const fallbackSend = () => {
+      const subject = encodeURIComponent(`AIme Contact — ${data.name || 'Website visitor'}`);
+      const body = encodeURIComponent(`Name: ${data.name || ''}\nEmail: ${data.email || ''}\n\nMessage:\n${data.message || ''}\n`);
+      window.location.href = `mailto:info@innovatorsgeneration.com?subject=${subject}&body=${body}`;
+      showSuccess('Draft email opened. If it did not open, please copy your message and email us.');
     };
 
     try {
-      const apiBase = getApiBase();
-      const response = await fetch(`${apiBase}/api/contact`, {
+      const response = await fetch(`${getApiBase()}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ ...data, source: window.location.href })
       });
-      
-      if (response.ok) {
-        form.reset();
-        const successMsg = document.getElementById('contact-success');
-        if (successMsg) {
-          successMsg.textContent = "Thanks — we'll get back to you soon.";
-          successMsg.hidden = false;
-          setTimeout(() => {
-            successMsg.hidden = true;
-          }, 5000);
-        }
-      } else {
-        await fallbackSend();
+      if (!response.ok) {
+        fallbackSend();
+        return;
       }
+      const result = await response.json().catch(() => ({}));
+      form.reset();
+      showSuccess(result.message || "Thanks — we'll get back to you soon.");
     } catch (error) {
       console.error('Contact form error:', error);
-      await fallbackSend();
+      fallbackSend();
     }
   });
 }
 
-// Theme Switcher
+document.querySelectorAll('a[href]').forEach(link => {
+  const href = link.getAttribute('href');
+  if (!href || href.startsWith('#')) return;
+  const isPage = /^https?:/i.test(href) || /^\.?\//.test(href) || /\.(html?|php)(?:[?#]|$)/i.test(href);
+  if (isPage && !link.target) {
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+  }
+});
+
 const themes = ['twilight', 'daylight', 'dark', 'ocean', 'sunset', 'forest'];
 let currentThemeIndex = 0;
 
-// Load saved theme from localStorage
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme && themes.includes(savedTheme)) {
   currentThemeIndex = themes.indexOf(savedTheme);
@@ -144,15 +147,7 @@ if (themeToggle) {
     const newTheme = themes[currentThemeIndex];
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
-    
-    // Visual feedback
     themeToggle.style.transform = 'rotate(360deg)';
-    setTimeout(() => {
-      themeToggle.style.transform = '';
-    }, 300);
+    setTimeout(() => { themeToggle.style.transform = ''; }, 300);
   });
 }
-
-// Allow configuring the backend API base URL (for GitHub Pages -> GoDaddy/Django)
-// Set once in DevTools:
-// localStorage.setItem('aimeApiBase', 'https://drmalik.ai')

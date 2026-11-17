@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AIme — AI-Enhanced Healthcare Innovation</title>
+  <title>Dr. Zubair Malik | Nephrology &amp; Internal Medicine</title>
 
-  <meta name="description" content="AI-enhanced healthcare platform by Dr. Zubair Malik. Nephrology consultations, AI copilot for clinicians, and health tech innovation." />
+  <meta name="description" content="Professional nephrology and internal medicine information, consultations, kidney and blood pressure care, and clinician-focused medical AI tools." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css" />
   <!-- OpenGraph -->
-  <meta property="og:title" content="AIme — AI-Enhanced Healthcare Innovation">
-  <meta property="og:description" content="Nephrology consultations, AI copilot for clinicians, and health tech innovation.">
+  <meta property="og:title" content="Dr. Zubair Malik | Nephrology &amp; Internal Medicine">
+  <meta property="og:description" content="Professional nephrology and internal medicine information, consultations, kidney and blood pressure care, and clinician-focused medical AI tools.">
   <meta property="og:type" content="website">
 </head>
 <body>
@@ -32,7 +32,7 @@
       <a href="#services" class="nav-icon" title="Services">
         <i class="fas fa-eye"></i>
       </a>
-      <a href="#apps" class="nav-icon" title="Apps">
+      <a href="#apps" class="nav-icon" title="Medical Apps">
         <i class="fas fa-users"></i>
       </a>
       <a href="#consultations" class="nav-icon" title="Consultations">
@@ -55,18 +55,18 @@
     <!-- Hero Section -->
     <section id="home" class="hero-section">
       <div class="hero-background" aria-hidden="true">
-        <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1920&q=80" alt="" class="bg-img" />
+        <img src="assets/sunstate-kidney-services.png" alt="" class="bg-img" />
         <div class="hero-glow hero-glow-one"></div>
         <div class="hero-glow hero-glow-two"></div>
         <div class="hero-blur"></div>
       </div>
       <div class="hero-content">
-        <div class="hero-eyebrow"><span class="status-dot"></span> AI-enhanced healthcare</div>
+        <div class="hero-eyebrow"><span class="status-dot"></span> Nephrology &amp; Internal Medicine</div>
         <h1 class="hero-title"><span class="gradient-text">Dr. Zubair Malik, MD, FASN</span></h1>
-        <p class="hero-tagline">Nephrologist • Clinician Educator • Health Tech Innovator</p>
-        <p class="hero-description">Practical, guideline-anchored kidney care and clinician tools that make complex decisions simpler at the bedside.</p>
+        <p class="hero-tagline">Nephrologist • Internist • Clinician Educator</p>
+        <p class="hero-description">Guideline-anchored kidney and blood pressure care, CKD risk reduction, dialysis decision support, and clinician education.</p>
         <div class="hero-ctas">
-          <a href="ai.html" class="btn btn-glow">Launch AI Web App</a>
+          <a href="ai.html" class="btn btn-glow">Open Clinical AI Tool</a>
           <a href="#contact" class="btn btn-outline">Get in Touch</a>
         </div>
         <div class="hero-highlights">
@@ -86,14 +86,28 @@
         <p class="section-text"><em>Interests:</em> CKD risk reduction, dialysis decision support, electrolyte disorders, clinical AI.</p>
         <div class="badges">
           <span class="badge">MD • FASN • FACP</span>
-          <span class="badge">Community Health Initiatives</span>
-          <span class="badge">AI for Clinicians</span>
+          <span class="badge">Nephrology &amp; Internal Medicine</span>
+          <span class="badge">Kidney &amp; Blood Pressure Care</span>
+        </div>
+        <div class="about-media">
+          <img src="assets/sunstate-kidney-logo.png" alt="Sunstate Kidney Health" width="1536" height="1024" loading="lazy" />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section id="workspace" class="workspace-section">
+      <div class="container">
+        <div class="tab-bar" data-tab-bar role="tablist" aria-label="Website sections">
+          <button type="button" class="tab-button active" data-tab-button="services" aria-selected="true">Services</button>
+          <button type="button" class="tab-button" data-tab-button="apps" aria-selected="false">Medical Apps</button>
+          <button type="button" class="tab-button" data-tab-button="chat" aria-selected="false">AI Chat</button>
+          <button type="button" class="tab-button" data-tab-button="consultations" aria-selected="false">Consultations</button>
+        </div>
+      </div>
+    </section>
 
     <!-- Services Section -->
-    <section id="services" class="content-section alt">
+    <section id="services" class="content-section alt" data-tab-panel="services">
     <div class="container">
         <span class="section-kicker">Services</span>
         <h2>Focused expertise when it matters.</h2>
@@ -140,125 +154,54 @@
     </section>
 
     <!-- Apps Section -->
-    <section id="apps" class="content-section">
+    <section id="apps" class="content-section" data-tab-panel="apps" hidden>
       <div class="container">
-        <span class="section-kicker">Applications</span>
-        <h2>Tools built around real clinical workflows.</h2>
-        <p class="section-sub">AI-enhanced tools for clinicians and healthcare innovation.</p>
+        <span class="section-kicker">Medical Applications</span>
+        <h2>Clinical tools for real healthcare workflows.</h2>
+        <p class="section-sub">Medical web applications used by healthcare teams, plus a clinician-focused nephrology AI tool.</p>
         <div class="app-grid">
           <div class="app-card featured">
-            <div class="ambulance-animation">
-              <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
-                <rect x="30" y="30" width="60" height="35" rx="3" fill="#ef4444" stroke="#dc2626" stroke-width="2"/>
-                <rect x="25" y="35" width="70" height="25" rx="2" fill="#ffffff"/>
-                <path d="M30 47.5 L50 47.5 M60 42.5 L60 52.5 M70 47.5 L90 47.5" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="45" cy="68" r="6" fill="#1e1e1e"/>
-                <circle cx="45" cy="68" r="4" fill="#4a4a4a"/>
-                <circle cx="75" cy="68" r="6" fill="#1e1e1e"/>
-                <circle cx="75" cy="68" r="4" fill="#4a4a4a"/>
-                <path d="M30 20 L25 30 L30 30 Z" fill="#ffffff"/>
-              </svg>
-            </div>
-            <h3>Mywaitine Web Application</h3>
-            <p class="app-text">Emergency medical services and wait time management platform.</p>
-            <a class="btn btn-mywaitine" href="https://www.google.com/search?q=Mywaitine" target="_blank" rel="noopener">Launch Mywaitine</a>
+            <h3>AI-Dr. Malik Clinical AI</h3>
+            <p class="app-text">Nephrology and internal medicine copilot for guideline-anchored plans, renal dosing questions, and electrolyte guidance.</p>
+            <a class="btn" href="ai.html">Open Clinical AI Tool</a>
           </div>
           <div class="app-card">
-            <h3>AI-Dr. Malik Web App</h3>
-            <p class="app-text">Clinician-facing AI copilot for nephrology and internal medicine. Drafts plans, suggests renal dosing, and cites guidelines.</p>
-            <a class="btn" href="ai.html">Launch Web App</a>
+            <h3>Doctor Schedule Manager</h3>
+            <p class="app-text">AI-powered medical staff scheduling with availability insights and dependable coverage.</p>
+            <a class="btn small" href="https://schedulemygroup.com/#settings" target="_blank" rel="noopener noreferrer">Open Web App</a>
+            <a class="btn small" href="https://play.google.com/store/apps/details?id=com.doctorschedule.app" target="_blank" rel="noopener noreferrer">Google Play</a>
           </div>
           <div class="app-card">
-            <h3>Medical Assistant</h3>
-            <p class="app-text">Clinician-focused assistant and workflows.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=Medical%20Assistant" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=Medical%20Assistant&c=apps" target="_blank" rel="noopener">Google Play</a>
+            <h3>Doctor On Call</h3>
+            <p class="app-text">Structured on-call rotations, clear handoffs, and team-wide coverage visibility.</p>
+            <a class="btn small" href="https://docsoncalls.com/" target="_blank" rel="noopener noreferrer">Open Web App</a>
+            <a class="btn small" href="https://play.google.com/store/apps/details?id=com.doctoroncall.emr" target="_blank" rel="noopener noreferrer">Google Play</a>
           </div>
           <div class="app-card">
-            <h3>ER Wait Time — Emergency Wait</h3>
-            <p class="app-text">Wait-time visibility and emergency flow support.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=ER%20Wait%20Time" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=ER%20Wait%20Time&c=apps" target="_blank" rel="noopener">Google Play</a>
+            <h3>ER Wait Time</h3>
+            <p class="app-text">Live patient wait-time clarity with AI chat for common emergency-department questions.</p>
+            <a class="btn small" href="https://mywaitime.com/#chat" target="_blank" rel="noopener noreferrer">Open Web App</a>
+            <a class="btn small" href="https://play.google.com/store/apps/details?id=com.easytechnologiez.ERTime" target="_blank" rel="noopener noreferrer">Google Play</a>
           </div>
-          <div class="app-card">
-            <h3>Lab Management</h3>
-            <p class="app-text">Lab organization and tracking utilities.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=Lab%20Management" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=Lab%20Management&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
-          <div class="app-card">
-            <h3>AzanMaster</h3>
-            <p class="app-text">Prayer time utility and reminders.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=AzanMaster" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=AzanMaster&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
-          <div class="app-card">
-            <h3>Emergency Time</h3>
-            <p class="app-text">Time-focused emergency utilities.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=Emergency%20Time" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=Emergency%20Time&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
-          <div class="app-card">
-            <h3>NutritionTrak</h3>
-            <p class="app-text">Nutrition tracking and guidance.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=NutritionTrak" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=NutritionTrak&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
-          <div class="app-card">
-            <h3>Diet101</h3>
-            <p class="app-text">Simple diet and habit coaching.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=Diet101" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=Diet101&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
-          <div class="app-card">
-            <h3>Medical Assistant Doc Notes</h3>
-            <p class="app-text">Documentation and note templates.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=Medical%20Assistant%20Doc%20Notes" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=Medical%20Assistant%20Doc%20Notes&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
-          <div class="app-card">
-            <h3>Islamic Ambience</h3>
-            <p class="app-text">Ambient sound generator and relaxation.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=Islamic%20Ambience" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=Islamic%20Ambience&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
-          <div class="app-card">
-            <h3>Privacy Defender</h3>
-            <p class="app-text">Privacy utilities and protection tools.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=Privacy%20Defender" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=Privacy%20Defender&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
-          <div class="app-card">
-            <h3>FamilyBookkeeping</h3>
-            <p class="app-text">Home bookkeeping and budgeting.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=FamilyBookkeeping" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=FamilyBookkeeping&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
-          <div class="app-card">
-            <h3>Legal101</h3>
-            <p class="app-text">Legal education and reference.</p>
-            <a class="btn small" href="https://apps.apple.com/us/search?term=Legal101" target="_blank" rel="noopener">App Store</a>
-            <a class="btn small" href="https://play.google.com/store/search?q=Legal101&c=apps" target="_blank" rel="noopener">Google Play</a>
-          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
     <!-- Inline AI Chat Section -->
-    <section id="chat" class="content-section alt">
+    <section id="chat" class="content-section alt" data-tab-panel="chat" hidden>
     <div class="container">
         <span class="section-kicker">AI Assistant</span>
-        <h2>Talk to AIme GPT.</h2>
+        <h2>Clinical AI for nephrology questions.</h2>
         <p class="section-sub">Ask clinical questions, draft plans, and explore guideline-cited answers.</p>
         <div class="chat-embed">
-          <iframe title="AIme Chat" src="ai.html" loading="lazy" allow="clipboard-write; fullscreen"></iframe>
+          <iframe title="Clinical nephrology AI chat" src="ai.html" loading="lazy" allow="clipboard-write; fullscreen"></iframe>
         </div>
         <p class="tiny">By using the AI, you agree to the <a href="privacy.html">Terms & Privacy</a>. Educational use only.</p>
     </div>
   </section>
 
     <!-- Consultations Section -->
-    <section id="consultations" class="content-section alt">
+    <section id="consultations" class="content-section alt" data-tab-panel="consultations" hidden>
       <div class="container">
         <span class="section-kicker">Consultations</span>
         <h2>Evidence-first care and guidance.</h2>
@@ -290,7 +233,7 @@
       <div class="container">
         <div class="footer-content">
       <div>
-            <div class="footer-brand">AIme</div>
+            <div class="footer-brand">Dr. Zubair Malik — Nephrology</div>
         <p class="tiny">Educational content only; not a substitute for in-person medical care. If this is an emergency, call local services.</p>
       </div>
           <div class="footer-links">
@@ -304,9 +247,9 @@
   </main>
 
   <!-- Floating Chat Button -->
-  <a href="ai.html" class="floating-chat" title="Talk to AIme GPT">
+  <a href="ai.html" class="floating-chat" title="Open clinical AI tool">
     <i class="fas fa-comment-dots"></i>
-    <span>Talk to AIme GPT</span>
+    <span>Clinical AI</span>
   </a>
 
   <!-- AI Modal (kept for compatibility) -->
