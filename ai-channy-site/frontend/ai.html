@@ -297,11 +297,7 @@
     const $ = id => document.getElementById(id);
     const params = new URLSearchParams(location.search);
     const audience = params.get('audience');
-    const rawBase = (params.get('api') || localStorage.getItem('aimeApiBase') || '').trim().replace(/\/$/, '');
-    const configuredBase = /drmalik\.ai/i.test(rawBase) ? '' : rawBase;
-    const engine = (params.get('engine') || localStorage.getItem('aimeEngine') || 'ml').toLowerCase();
-    const API_BASE = configuredBase || 'https://api.docsoncalls.com/ml';
-    const USE_ML = engine === 'ml' && !configuredBase;
+    const API_BASE = 'https://api.docsoncalls.com/ml';
 
     let sessions = [];
     let activeId = 0;
@@ -422,18 +418,21 @@
     }
 
     async function getReply(turns, text, update) {
-      if (USE_ML) {
-        try {
-          const streamed = await streamChat(turns, update);
-          if (streamed.trim()) return streamed.trim();
-        } catch (error) {
-          console.warn('Streaming unavailable; using fallback', error);
-          update('');
-        }
+      try {
+        const streamed = await streamChat(turns, update);
+        if (streamed.trim()) return streamed.trim();
+      } catch (error) {
+        console.warn('Streaming unavailable; using fallback', error);
+        update('');
+      }
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 45000);
+      try {
         const response = await fetch(`${API_BASE}/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ turns })
+          body: JSON.stringify({ turns }),
+          signal: controller.signal
         });
         if (response.ok) {
           const data = await response.json();
@@ -442,19 +441,15 @@
         const fallback = await fetch(`${API_BASE}/consult`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: text, include_takeaway: true, max_results: 4 })
+          body: JSON.stringify({ question: text, include_takeaway: true, max_results: 4 }),
+          signal: controller.signal
         });
         if (!fallback.ok) throw Error('Backend unavailable');
         const data = await fallback.json();
         return (data.takeaway || data.evidence_summary || '').trim();
+      } finally {
+        clearTimeout(timeout);
       }
-      const response = await fetch(`${API_BASE}/api/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ turns })
-      });
-      if (!response.ok) throw Error('Backend unavailable');
-      return ((await response.json()).reply || '').trim();
     }
 
     async function sendMessage() {
