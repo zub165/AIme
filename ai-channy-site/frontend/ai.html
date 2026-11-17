@@ -144,6 +144,26 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+    .suggestions button {
+      padding: 0.35rem 0.7rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: #f8fafc;
+      color: #0f766e;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .suggestions button:hover {
+      background: #ecfdf5;
+      border-color: #0d9488;
+    }
     .error {
       background: #fee2e2;
       color: #991b1b;
@@ -162,6 +182,12 @@
     <div class="chat-messages" id="messages"></div>
     <div class="chat-input">
       <div id="error" class="error" hidden></div>
+      <div id="suggestions" class="suggestions" hidden>
+        <button type="button" data-question="What is acute kidney injury (AKI)?">What is AKI?</button>
+        <button type="button" data-question="What does my eGFR number mean?">eGFR explained</button>
+        <button type="button" data-question="I have swelling in my feet and less urine — what should I do?">Swelling &amp; less urine</button>
+        <button type="button" data-question="What questions should I ask my kidney doctor?">Questions for my doctor</button>
+      </div>
       <div class="input-group">
         <textarea id="input" placeholder="Ask about renal dosing, electrolytes, guidelines..." rows="1"></textarea>
         <button id="send">Send</button>
@@ -183,19 +209,67 @@
     const API_BASE = configuredBase || 'https://api.docsoncalls.com/ml';
     const USE_ML = engine === 'ml' && !configuredBase;
 
+    function format(content) {
+      let text = String(content).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      return text.replace(/\n/g, '<br>');
+    }
+
     function addMessage(role, content) {
       const div = document.createElement('div');
       div.className = `message ${role}`;
       const bubble = document.createElement('div');
       bubble.className = 'message-bubble';
-      // Simple markdown-like formatting
-      content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      content = content.replace(/\n/g, '<br>');
-      bubble.innerHTML = content;
+      bubble.innerHTML = format(content);
       div.appendChild(bubble);
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
+      return bubble;
+    }
+
+    function createStreamingMessage() {
+      const div = document.createElement('div');
+      div.className = 'message assistant';
+      const bubble = document.createElement('div');
+      bubble.className = 'message-bubble';
+      div.appendChild(bubble);
+      messagesEl.appendChild(div);
+      return { div, bubble };
+    }
+
+    async function streamChat(bubble) {
+      const response = await fetch(`${API_BASE}/api/chat/stream`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ turns })
+      });
+      if (!response.ok) throw new Error('Stream unavailable');
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let raw = '';
+      let complete = false;
+      while (!complete) {
+        const chunk = await reader.read();
+        if (chunk.done) break;
+        buffer += decoder.decode(chunk.value, { stream: true });
+        const events = buffer.split('\n\n');
+        buffer = events.pop();
+        for (const event of events) {
+          const line = event.split('\n').find(part => part.startsWith('data: '));
+          if (!line) continue;
+          let payload;
+          try { payload = JSON.parse(line.slice(6)); } catch (e) { continue; }
+          if (payload.error) throw new Error(payload.error);
+          if (payload.done) { complete = true; break; }
+          if (payload.token) {
+            raw += payload.token;
+            bubble.innerHTML = format(raw);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+          }
+        }
+      }
+      return raw;
     }
 
     const audience = new URLSearchParams(window.location.search).get('audience');
@@ -204,7 +278,14 @@
       document.querySelector('.chat-header h2').textContent = 'Sunstate AI Assistant';
       document.querySelector('.chat-header p').textContent = 'Plain-language answers about kidney and blood pressure care. Educational only — not medical advice.';
       inputEl.placeholder = 'Ask a question (e.g. What does my eGFR mean?)';
+      document.getElementById('suggestions').hidden = false;
       addMessage('assistant', 'Hello! I can explain kidney and blood pressure topics in plain language and suggest questions to ask your care team. I am not a doctor — this is educational information only, not medical advice. What would you like to know?');
+      document.querySelectorAll('#suggestions button').forEach(button => {
+        button.onclick = () => {
+          inputEl.value = button.dataset.question;
+          sendMessage();
+        };
+      });
     }
 
     function showError(msg) {
@@ -218,9 +299,9 @@
       if (!text) return;
 
       inputEl.value = '';
+      inputEl.style.height = 'auto';
       sendBtn.disabled = true;
       addMessage('user', text);
-
       turns.push({ role: 'user', content: text });
 
       const loading = document.createElement('div');
@@ -231,27 +312,37 @@
       loading.appendChild(loadingBubble);
       messagesEl.appendChild(loading);
 
+      let reply = '';
+      let streamView = null;
       try {
-        let reply;
         if (USE_ML) {
-          const r = await fetch(`${API_BASE}/api/chat`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ turns })
-          });
-          if (r.ok) {
-            const data = await r.json();
-            reply = (data.reply || '').trim();
+          try {
+            if (loading.parentNode === messagesEl) messagesEl.removeChild(loading);
+            streamView = createStreamingMessage();
+            reply = (await streamChat(streamView.bubble)).trim();
+            if (!reply) throw new Error('Empty stream');
+          } catch (streamError) {
+            console.warn('Streaming unavailable, falling back', streamError);
+            if (streamView && streamView.div.parentNode === messagesEl) messagesEl.removeChild(streamView.div);
+            streamView = null;
           }
           if (!reply) {
-            const fallback = await fetch(`${API_BASE}/consult`, {
+            const r = await fetch(`${API_BASE}/api/chat`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ question: text, include_takeaway: true, max_results: 4 })
+              body: JSON.stringify({ turns })
             });
-            if (!fallback.ok) throw new Error(await fallback.text() || 'Server error');
-            const data = await fallback.json();
-            reply = (data.takeaway || data.evidence_summary || '').trim();
+            if (r.ok) reply = ((await r.json()).reply || '').trim();
+            if (!reply) {
+              const fallback = await fetch(`${API_BASE}/consult`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: text, include_takeaway: true, max_results: 4 })
+              });
+              if (!fallback.ok) throw new Error(await fallback.text() || 'Server error');
+              const data = await fallback.json();
+              reply = (data.takeaway || data.evidence_summary || '').trim();
+            }
           }
           if (!reply) throw new Error('Empty response from ML backend');
         } else {
@@ -261,10 +352,11 @@
             body: JSON.stringify({ turns })
           });
           if (!r.ok) throw new Error(await r.text() || 'Server error');
-          reply = (await r.json()).reply;
+          reply = ((await r.json()).reply || '').trim();
         }
+        if (!reply) throw new Error('Empty response');
         turns.push({ role: 'assistant', content: reply });
-        addMessage('assistant', reply);
+        if (!streamView) addMessage('assistant', reply);
       } catch (e) {
         showError('Failed to get response. Please try again.');
         console.error(e);

@@ -24,6 +24,7 @@
         <a href="#services">Our Services</a>
         <a href="#about">About Us</a>
         <a href="#ask-ai">Ask Our AI</a>
+        <a href="#lab-check">Lab Check</a>
         <a href="#contact">Contact</a>
       </nav>
       <a href="#contact" class="btn btn-primary btn-small"><i class="fa-solid fa-calendar-check"></i> Request Appointment</a>
@@ -152,6 +153,54 @@
       </div>
     </section>
 
+    <section id="lab-check" class="lab">
+      <div class="container">
+        <div class="lab-card">
+          <span class="section-kicker">Lab Check</span>
+          <h2>Get a quick kidney-risk estimate from your labs.</h2>
+          <p style="color: var(--muted); margin-top: 0.75rem;">Enter a few recent values to see a model estimate. This is not a diagnosis and does not replace your doctor's review of your labs.</p>
+          <form id="lab-form" class="lab-grid">
+            <div class="lab-field">
+              <label for="lab-age">Age</label>
+              <input id="lab-age" name="age" type="number" step="any" inputmode="decimal" placeholder="e.g. 60" />
+            </div>
+            <div class="lab-field">
+              <label for="lab-creatinine">Creatinine (mg/dL)</label>
+              <input id="lab-creatinine" name="creatinine" type="number" step="any" inputmode="decimal" placeholder="e.g. 1.4" />
+            </div>
+            <div class="lab-field">
+              <label for="lab-potassium">Potassium (mEq/L)</label>
+              <input id="lab-potassium" name="potassium" type="number" step="any" inputmode="decimal" placeholder="e.g. 4.5" />
+            </div>
+            <div class="lab-field">
+              <label for="lab-sodium">Sodium (mEq/L)</label>
+              <input id="lab-sodium" name="sodium" type="number" step="any" inputmode="decimal" placeholder="e.g. 140" />
+            </div>
+            <div class="lab-field">
+              <label for="lab-glucose">Glucose (mg/dL)</label>
+              <input id="lab-glucose" name="glucose" type="number" step="any" inputmode="decimal" placeholder="e.g. 120" />
+            </div>
+            <div class="lab-field">
+              <label for="lab-hemoglobin">Hemoglobin (g/dL)</label>
+              <input id="lab-hemoglobin" name="hemoglobin" type="number" step="any" inputmode="decimal" placeholder="e.g. 13" />
+            </div>
+            <div class="lab-field">
+              <label for="lab-bp">Blood pressure (systolic)</label>
+              <input id="lab-bp" name="bp" type="number" step="any" inputmode="decimal" placeholder="e.g. 130" />
+            </div>
+            <div class="lab-field">
+              <label for="lab-urea">Urea (mg/dL)</label>
+              <input id="lab-urea" name="urea" type="number" step="any" inputmode="decimal" placeholder="e.g. 25" />
+            </div>
+          </form>
+          <div class="lab-actions">
+            <button id="lab-submit" class="btn btn-primary" type="button">Get estimate</button>
+          </div>
+          <div id="lab-result" class="lab-result" hidden></div>
+        </div>
+      </div>
+    </section>
+
     <section class="cta-band">
       <div class="container">
         <h2>Ready to take the next step in your kidney care?</h2>
@@ -247,6 +296,41 @@
     });
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeChat();
+    });
+
+    const labResult = document.getElementById('lab-result');
+    const labSubmit = document.getElementById('lab-submit');
+    const LAB_API_BASE = 'https://api.docsoncalls.com/ml';
+
+    document.getElementById('lab-form').addEventListener('submit', event => event.preventDefault());
+
+    labSubmit.addEventListener('click', async () => {
+      const labs = {};
+      document.querySelectorAll('#lab-form input').forEach(input => {
+        if (input.value !== '') labs[input.name] = input.value;
+      });
+      if (Object.keys(labs).length < 4) {
+        labResult.hidden = false;
+        labResult.textContent = 'Please enter at least 4 lab values.';
+        return;
+      }
+      labSubmit.disabled = true;
+      labResult.hidden = false;
+      labResult.textContent = 'Checking your numbers...';
+      try {
+        const response = await fetch(`${LAB_API_BASE}/api/chat/predict`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ labs })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.detail || 'Could not check labs. Please try again.');
+        labResult.textContent = data.reply || 'No result returned. Please try again.';
+      } catch (error) {
+        labResult.textContent = error.message || 'Could not check labs. Please try again.';
+      } finally {
+        labSubmit.disabled = false;
+      }
     });
   </script>
 </body>

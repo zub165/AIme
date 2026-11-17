@@ -3,6 +3,7 @@
 A professional website for Dr. Zubair Malik, MD, featuring:
 - Consultation booking information
 - AI-Dr. Malik chat interface for clinician education
+- Sunstate Kidney & Hypertension patient page with plain-language AI chat and a CKD lab-risk estimate
 - Privacy and Terms pages
 
 ## Project Structure
@@ -148,6 +149,8 @@ sudo certbot --nginx -d drmalik.ai -d www.drmalik.ai
 - `GET /healthz`: Health check endpoint
 - `POST /api/contact`: Submit contact form
 - `POST /api/chat`: Chat with AI-Dr. Malik
+- `POST /api/chat/stream`: Stream chat replies as server-sent events
+- `POST /api/chat/predict`: CKD risk estimate from entered lab values
 
 ## Notes
 
