@@ -177,19 +177,11 @@
 
     let turns = [];
 
-    function getApiBase() {
-      const qs = new URLSearchParams(window.location.search);
-      const fromQuery = (qs.get('api') || '').trim();
-      if (fromQuery) return fromQuery.replace(/\/$/, '');
-
-      const fromStorage = (localStorage.getItem('aimeApiBase') || '').trim();
-      if (fromStorage) return fromStorage.replace(/\/$/, '');
-
-      // Default to your GoDaddy backend domain (Django should expose /api/chat and /api/contact)
-      return 'https://drmalik.ai';
-    }
-
-    const API_BASE = getApiBase();
+    const params = new URLSearchParams(window.location.search);
+    const configuredBase = (params.get('api') || localStorage.getItem('aimeApiBase') || '').trim().replace(/\/$/, '');
+    const engine = (params.get('engine') || localStorage.getItem('aimeEngine') || 'ml').toLowerCase();
+    const API_BASE = configuredBase || 'https://api.docsoncalls.com/ml';
+    const USE_ML = engine === 'ml' && !configuredBase;
 
     function addMessage(role, content) {
       const div = document.createElement('div');
@@ -197,6 +189,7 @@
       const bubble = document.createElement('div');
       bubble.className = 'message-bubble';
       // Simple markdown-like formatting
+      content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
       content = content.replace(/\n/g, '<br>');
       bubble.innerHTML = content;
@@ -239,26 +232,33 @@
       messagesEl.appendChild(loading);
 
       try {
-        const r = await fetch(`${API_BASE}/api/chat`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ turns })
-        });
-
-        messagesEl.removeChild(loading);
-
-        if (!r.ok) {
-          const err = await r.text();
-          throw new Error(err || 'Server error');
+        let reply;
+        if (USE_ML) {
+          const r = await fetch(`${API_BASE}/consult`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: text, include_takeaway: true, max_results: 4 })
+          });
+          if (!r.ok) throw new Error(await r.text() || 'Server error');
+          const data = await r.json();
+          reply = (data.takeaway || data.evidence_summary || '').trim();
+          if (!reply) throw new Error('Empty response from ML backend');
+        } else {
+          const r = await fetch(`${API_BASE}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ turns })
+          });
+          if (!r.ok) throw new Error(await r.text() || 'Server error');
+          reply = (await r.json()).reply;
         }
-
-        const data = await r.json();
-        turns.push({ role: 'assistant', content: data.reply });
-        addMessage('assistant', data.reply);
+        turns.push({ role: 'assistant', content: reply });
+        addMessage('assistant', reply);
       } catch (e) {
         showError('Failed to get response. Please try again.');
         console.error(e);
       } finally {
+        if (loading.parentNode === messagesEl) messagesEl.removeChild(loading);
         sendBtn.disabled = false;
         inputEl.focus();
       }
