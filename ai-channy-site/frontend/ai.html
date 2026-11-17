@@ -234,14 +234,25 @@
       try {
         let reply;
         if (USE_ML) {
-          const r = await fetch(`${API_BASE}/consult`, {
+          const r = await fetch(`${API_BASE}/api/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question: text, include_takeaway: true, max_results: 4 })
+            body: JSON.stringify({ turns })
           });
-          if (!r.ok) throw new Error(await r.text() || 'Server error');
-          const data = await r.json();
-          reply = (data.takeaway || data.evidence_summary || '').trim();
+          if (r.ok) {
+            const data = await r.json();
+            reply = (data.reply || '').trim();
+          }
+          if (!reply) {
+            const fallback = await fetch(`${API_BASE}/consult`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ question: text, include_takeaway: true, max_results: 4 })
+            });
+            if (!fallback.ok) throw new Error(await fallback.text() || 'Server error');
+            const data = await fallback.json();
+            reply = (data.takeaway || data.evidence_summary || '').trim();
+          }
           if (!reply) throw new Error('Empty response from ML backend');
         } else {
           const r = await fetch(`${API_BASE}/api/chat`, {
