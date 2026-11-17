@@ -732,6 +732,13 @@ textarea:focus-visible {
   border-radius: 12px;
 }
 
+.about-caption {
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
 .workspace-section {
   padding: 1.5rem 0 0;
   background: var(--bg-main);

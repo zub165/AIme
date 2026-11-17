@@ -20,6 +20,7 @@ A professional website for Dr. Zubair Malik, MD, featuring:
 ai-channy-site/
 ├── frontend/
 │   ├── assets/             # Local medical images
+│   │   ├── doctor-profile-degrees.jpg
 │   │   ├── sunstate-kidney-logo.png
 │   │   └── sunstate-kidney-services.png
 │   ├── index.html          # Main landing page
