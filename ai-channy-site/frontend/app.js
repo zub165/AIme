@@ -133,9 +133,8 @@ if (savedTheme && themes.includes(savedTheme)) {
   currentThemeIndex = themes.indexOf(savedTheme);
   document.documentElement.setAttribute('data-theme', savedTheme);
 } else {
-  // Default to twilight theme
-  document.documentElement.setAttribute('data-theme', 'twilight');
-  currentThemeIndex = themes.indexOf('twilight');
+  document.documentElement.setAttribute('data-theme', 'daylight');
+  currentThemeIndex = themes.indexOf('daylight');
 }
 
 const themeToggle = document.getElementById('theme-toggle');

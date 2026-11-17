@@ -48,82 +48,31 @@
         <i class="fas fa-palette"></i>
       </button>
       </nav>
-    <div class="sidebar-social">
-      <a href="#" class="social-icon" title="Facebook"><i class="fab fa-facebook"></i></a>
-      <a href="#" class="social-icon" title="Twitter"><i class="fab fa-twitter"></i></a>
-      <a href="https://linkedin.com" class="social-icon" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-      <a href="#" class="social-icon" title="YouTube"><i class="fab fa-youtube"></i></a>
-      <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
-    </div>
   </aside>
 
   <!-- Main Content -->
   <main class="main-content">
     <!-- Hero Section -->
     <section id="home" class="hero-section">
-      <div class="hero-background">
-        <div class="medical-bg-images">
-          <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1920&q=80" alt="Medical professionals" class="bg-img bg-doctors" />
-          <img src="assets/kidney-real.png" alt="Kidney health illustration" class="bg-img bg-hospital" onerror="this.onerror=null;this.style.display='none';" />
-        </div>
-        <div class="medical-graphics">
-          <div class="kidney-graphic kidney-left"></div>
-          <div class="kidney-graphic kidney-right"></div>
-        </div>
+      <div class="hero-background" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1920&q=80" alt="" class="bg-img" />
+        <div class="hero-glow hero-glow-one"></div>
+        <div class="hero-glow hero-glow-two"></div>
         <div class="hero-blur"></div>
       </div>
-      <div class="dialysis-animation-container">
-        <div class="dialysis-machine">
-          <div class="dial-tube"></div>
-        </div>
-      </div>
       <div class="hero-content">
+        <div class="hero-eyebrow"><span class="status-dot"></span> AI-enhanced healthcare</div>
         <h1 class="hero-title"><span class="gradient-text">Dr. Zubair Malik, MD, FASN</span></h1>
-        <div class="hero-ribbon" aria-hidden="true">
-          <div class="dna-medical">
-            <svg viewBox="0 0 200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="dnaGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
-                </linearGradient>
-              </defs>
-              <path d="M10 22 Q15 10, 25 22 T45 22 T65 22 T85 22 T105 22 T125 22 T145 22 T165 22 T185 22" 
-                    stroke="url(#dnaGrad)" stroke-width="3" fill="none" stroke-linecap="round"/>
-              <circle cx="10" cy="22" r="3" fill="#3b82f6"/>
-              <circle cx="25" cy="22" r="3" fill="#3b82f6"/>
-              <circle cx="45" cy="22" r="3" fill="#3b82f6"/>
-              <circle cx="65" cy="22" r="3" fill="#3b82f6"/>
-              <circle cx="85" cy="22" r="3" fill="#3b82f6"/>
-              <circle cx="105" cy="22" r="3" fill="#3b82f6"/>
-              <circle cx="125" cy="22" r="3" fill="#3b82f6"/>
-              <circle cx="145" cy="22" r="3" fill="#3b82f6"/>
-              <circle cx="165" cy="22" r="3" fill="#3b82f6"/>
-              <circle cx="185" cy="22" r="3" fill="#3b82f6"/>
-            </svg>
-          </div>
-          <div class="ecg-wave">
-            <svg viewBox="0 0 400 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="ecgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
-                </linearGradient>
-                <clipPath id="ecgClip">
-                  <rect id="ecgMask" x="0" y="0" width="400" height="44"/>
-                </clipPath>
-              </defs>
-              <g clip-path="url(#ecgClip)">
-                <path class="ecg-line" d="M0 22 L20 22 L25 8 L30 22 L50 22 L55 36 L60 22 L80 22 L85 8 L90 22 L110 22 L115 36 L120 22 L140 22 L145 8 L150 22 L170 22 L175 36 L180 22 L200 22 L205 8 L210 22 L230 22 L235 36 L240 22 L260 22 L265 8 L270 22 L290 22 L295 36 L300 22 L320 22 L325 8 L330 22 L350 22 L355 36 L360 22 L380 22 L385 8 L390 22 L400 22" 
-                      stroke="url(#ecgGrad)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              </g>
-            </svg>
-          </div>
-        </div>
         <p class="hero-tagline">Nephrologist • Clinician Educator • Health Tech Innovator</p>
+        <p class="hero-description">Practical, guideline-anchored kidney care and clinician tools that make complex decisions simpler at the bedside.</p>
         <div class="hero-ctas">
           <a href="ai.html" class="btn btn-glow">Launch AI Web App</a>
           <a href="#contact" class="btn btn-outline">Get in Touch</a>
+        </div>
+        <div class="hero-highlights">
+          <div class="highlight"><strong>Guideline-anchored</strong><span>KDIGO/KDOQI informed</span></div>
+          <div class="highlight"><strong>Built for clinicians</strong><span>Faster, clearer decisions</span></div>
+          <div class="highlight"><strong>Patient-first</strong><span>Clear education and care</span></div>
         </div>
       </div>
     </section>
@@ -131,7 +80,8 @@
     <!-- About Section -->
     <section id="about" class="content-section">
       <div class="container">
-        <h2>About</h2>
+        <span class="section-kicker">About</span>
+        <h2>Clinical insight, made practical.</h2>
         <p class="section-text">Nephrologist & Internist focused on practical, guideline-anchored care, community health, and clinician education. Creator of digital tools that make complex renal decisions simpler at the bedside.</p>
         <p class="section-text"><em>Interests:</em> CKD risk reduction, dialysis decision support, electrolyte disorders, clinical AI.</p>
         <div class="badges">
@@ -145,7 +95,8 @@
     <!-- Services Section -->
     <section id="services" class="content-section alt">
     <div class="container">
-        <h2>Services</h2>
+        <span class="section-kicker">Services</span>
+        <h2>Focused expertise when it matters.</h2>
       <p class="section-sub">Focused expertise in kidney disease and complex internal medicine.</p>
       <div class="cards">
         <div class="card">
@@ -191,7 +142,8 @@
     <!-- Apps Section -->
     <section id="apps" class="content-section">
       <div class="container">
-        <h2>Applications</h2>
+        <span class="section-kicker">Applications</span>
+        <h2>Tools built around real clinical workflows.</h2>
         <p class="section-sub">AI-enhanced tools for clinicians and healthcare innovation.</p>
         <div class="app-grid">
           <div class="app-card featured">
@@ -295,7 +247,8 @@
     <!-- Inline AI Chat Section -->
     <section id="chat" class="content-section alt">
     <div class="container">
-        <h2>Talk to AIme GPT</h2>
+        <span class="section-kicker">AI Assistant</span>
+        <h2>Talk to AIme GPT.</h2>
         <p class="section-sub">Ask clinical questions, draft plans, and explore guideline-cited answers.</p>
         <div class="chat-embed">
           <iframe title="AIme Chat" src="ai.html" loading="lazy" allow="clipboard-write; fullscreen"></iframe>
@@ -307,7 +260,8 @@
     <!-- Consultations Section -->
     <section id="consultations" class="content-section alt">
       <div class="container">
-        <h2>Consultations</h2>
+        <span class="section-kicker">Consultations</span>
+        <h2>Evidence-first care and guidance.</h2>
         <p class="section-sub">Evidence-first care in Nephrology & Internal Medicine.</p>
         <div class="info-box">
           <p>Clinical consultations, education, and a safe AI copilot trained on KDIGO/KDOQI & major guidelines—anchored to how Dr. Malik practices.</p>
@@ -319,7 +273,8 @@
     <!-- Contact Section -->
     <section id="contact" class="content-section">
     <div class="container">
-      <h2>Contact</h2>
+      <span class="section-kicker">Contact</span>
+      <h2>Let's start a conversation.</h2>
       <form id="contact-form" class="contact-form">
         <input type="text" name="name" placeholder="Your name" required />
         <input type="email" name="email" placeholder="Your email" required />
