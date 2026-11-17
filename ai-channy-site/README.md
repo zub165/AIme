@@ -12,6 +12,8 @@ ai-channy-site/
 ├── frontend/
 │   ├── index.html          # Main landing page
 │   ├── ai.html             # AI chat interface (iframe)
+│   ├── sunstate.html       # Sunstate Kidney & Hypertension patient page
+│   ├── sunstate.css        # Styles for the Sunstate page
 │   ├── styles.css          # Styling
 │   ├── app.js              # Frontend JavaScript
 │   ├── privacy.html        # Privacy policy page

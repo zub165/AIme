@@ -205,6 +205,15 @@
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
+    const audience = new URLSearchParams(window.location.search).get('audience');
+    if (audience === 'patient') {
+      document.title = 'Ask a Question | Sunstate Kidney & Hypertension';
+      document.querySelector('.chat-header h2').textContent = 'Sunstate AI Assistant';
+      document.querySelector('.chat-header p').textContent = 'Plain-language answers about kidney and blood pressure care. Educational only — not medical advice.';
+      inputEl.placeholder = 'Ask a question (e.g. What does my eGFR mean?)';
+      addMessage('assistant', 'Hello! I can explain kidney and blood pressure topics in plain language and suggest questions to ask your care team. I am not a doctor — this is educational information only, not medical advice. What would you like to know?');
+    }
+
     function showError(msg) {
       errorEl.textContent = msg;
       errorEl.hidden = false;
